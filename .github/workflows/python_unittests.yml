@@ -1,0 +1,35 @@
+# https://github.com/marketplace/actions/python-flake8-lint
+
+name: python unittests
+
+#on: [push, pull_request]
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # every Sunday at UTC midnight
+    - cron: '0 0 * * 0'
+  push:
+    branches: [ master ]
+    # Publish semver tags as releases.
+    tags: [ '*.*.*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    name: unittest
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Test with unittest
+        run: |
+          sh qnap_exporter/unit_tests.sh

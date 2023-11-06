@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  qnap_exporter:
+    container_name: qnap_exporter
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ 'sh', 'run_prod.sh' ]
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "1996:1996"
+      - "9200:9200"
+    stdin_open: true
+    tty: true

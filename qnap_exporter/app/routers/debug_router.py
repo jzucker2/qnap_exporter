@@ -26,6 +26,28 @@ class DebugRouter(Router):
             p_m = 'handle debug route'
             log.info(p_m)
             final_response = self.base_response('debug_route')
-            stats = self.qnap_client.get_system_stats()
-            log.info(f'stats: {stats}')
+            system_stats = self.qnap_client.get_system_stats()
+            log.info(f'system_stats: {system_stats}')
+            if system_stats:
+                final_response['system_stats'] = system_stats
+            system_health = self.qnap_client.get_system_health()
+            log.info(f'system_health: {system_health}')
+            if system_health:
+                final_response['system_health'] = system_health
+            bandwidth = self.qnap_client.get_bandwidth()
+            log.info(f'bandwidth: {bandwidth}')
+            if bandwidth:
+                final_response['bandwidth'] = bandwidth
+            volumes = self.qnap_client.get_volumes()
+            log.info(f'volumes: {volumes}')
+            if volumes:
+                final_response['volumes'] = volumes
+            # firmware_update = self.qnap_client.get_firmware_update()
+            # log.info(f'firmware_update: {firmware_update}')
+            # if firmware_update:
+            #     final_response['firmware_update'] = firmware_update
+            smart_disk_health = self.qnap_client.get_smart_disk_health()
+            log.info(f'smart_disk_health: {smart_disk_health}')
+            if smart_disk_health:
+                final_response['smart_disk_health'] = smart_disk_health
             return final_response

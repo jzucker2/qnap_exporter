@@ -9,3 +9,9 @@ log = app.logger
 def handle_debug_route():
     router = DebugRouter()
     return router.handle_debug_route_response()
+
+
+@app.route('/api/v1/qnap/debug/pprint')
+def handle_debug_pprint_route():
+    router = DebugRouter()
+    return router.handle_debug_pprint_route_response()

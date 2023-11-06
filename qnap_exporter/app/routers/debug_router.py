@@ -53,12 +53,12 @@ class DebugRouter(Router):
             return final_response
 
     @Metrics.DEBUG_ROUTE_TIME.time()
-    def handle_debug_print_route_response(self):
+    def handle_debug_pprint_route_response(self):
         with Metrics.DEBUG_ROUTE_EXCEPTIONS.count_exceptions():
             import pprint
             p_m = 'handle debug print route'
             log.info(p_m)
-            final_response = self.base_response('debug_print_route')
+            final_response = self.base_response('debug_pprint_route')
             system_stats = self.qnap_client.get_system_stats()
             log.info(f'system_stats: {system_stats}')
             pprint.pprint(system_stats)

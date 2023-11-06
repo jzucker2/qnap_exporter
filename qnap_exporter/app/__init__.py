@@ -27,7 +27,7 @@ def create_app(config=config.base_config):
 
         # Include our Routes
         from .routes import utils  # noqa: F401
-        from .routes import magic  # noqa: F401
+        from .routes import debug  # noqa: F401
 
         # after routes, register metrics
         register_metrics(app)

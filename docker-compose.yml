@@ -14,5 +14,9 @@ services:
     ports:
       - "1996:1996"
       - "9200:9200"
+    environment:
+      - QNAP_HOST_IP="10.0.1.1"
+      - QNAP_USERNAME="admin"
+      - QNAP_PASSWORD="password"
     stdin_open: true
     tty: true

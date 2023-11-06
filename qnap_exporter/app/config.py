@@ -78,6 +78,22 @@ class base_config(object):
     APP_DIR = os.path.dirname(__file__)
     MIGRATION_DIRECTORY = os.path.join(APP_DIR, "migrations")
 
+    DEFAULT_QNAP_HOST_IP = "10.0.1.1"
+    QNAP_HOST_IP = os.getenv("QNAP_HOST_IP",
+                             default=DEFAULT_QNAP_HOST_IP)
+
+    DEFAULT_QNAP_PORT = 8080
+    QNAP_PORT = os.getenv("QNAP_PORT",
+                          default=DEFAULT_QNAP_PORT)
+
+    DEFAULT_QNAP_USERNAME = "admin"
+    QNAP_USERNAME = os.getenv("QNAP_USERNAME",
+                              default=DEFAULT_QNAP_USERNAME)
+
+    DEFAULT_QNAP_PASSWORD = "password"
+    QNAP_PASSWORD = os.getenv("QNAP_PASSWORD",
+                              default=DEFAULT_QNAP_PASSWORD)
+
 
 class dev_config(base_config):
     """Development configuration options."""

@@ -25,7 +25,12 @@ class QNAPClient(object):
         return cls(host, port, username, password)
 
     def __init__(self, host, port, username, password, verify_ssl=False):
-        self.client = QNAPStats(host, port, username, password, verify_ssl=verify_ssl)
+        self.client = QNAPStats(
+            host,
+            port,
+            username,
+            password,
+            verify_ssl=verify_ssl)
 
     def get_system_health(self):
         return self.client.get_system_health()

@@ -1,6 +1,7 @@
 from flask import current_app as app
 from ..utils import global_get_now
 from ..common.domains import Domains
+from ..metrics import Metrics
 
 
 log = app.logger
@@ -12,6 +13,16 @@ class DomainStatsException(Exception):
 
 class InvalidMetricsDomainStatsException(DomainStatsException):
     pass
+
+
+class SystemStatsKeys(object):
+    CPU = 'cpu'
+    DNS = 'dns'
+    FIRMWARE = 'firmware'
+    MEMORY = 'memory'
+    NICS = 'nics'
+    SYSTEM = 'system'
+    UPTIME = 'uptime'
 
 
 class DomainStats(object):
@@ -90,6 +101,24 @@ class DomainStats(object):
         m = (f'_process_system_stats => '
              f'stats: {stats} ({self.last_updated})')
         log.info(m)
+        cpu = stats.get(SystemStatsKeys.CPU)
+        if cpu:
+            temp_c = cpu.get('temp_c', 0)
+            Metrics.SYSTEM_STATS_CPU_TEMP_C_VALUE.set(temp_c)
+            temp_f = cpu.get('temp_f', 0)
+            Metrics.SYSTEM_STATS_CPU_TEMP_F_VALUE.set(temp_f)
+            usage_percent = cpu.get('usage_percent', 0)
+            Metrics.SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE.set(usage_percent)
+            log.info(f'cpu stats => {temp_c}, {temp_f}, {usage_percent}')
+        memory = stats.get(SystemStatsKeys.MEMORY)
+        if memory:
+            free = memory.get('free', 0)
+            Metrics.SYSTEM_STATS_MEMORY_FREE_VALUE.set(free)
+            total = memory.get('total', 0)
+            Metrics.SYSTEM_STATS_MEMORY_TOTAL_VALUE.set(total)
+            log.info(f'memory stats => {free}/{total}')
+        uptime = stats.get(SystemStatsKeys.UPTIME)
+        log.info(f'uptime: {uptime}')
 
     def _process_system_health(self):
         stats = self.stats

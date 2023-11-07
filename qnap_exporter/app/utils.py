@@ -58,6 +58,10 @@ def get_iso_datetime(input,
         return dt
 
 
+def global_get_now():
+    return datetime.utcnow()
+
+
 def memory_address(a_obj):
     return id(a_obj)
 

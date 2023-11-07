@@ -16,4 +16,7 @@ curl -i "http://localhost:1996/api/v1/qnap/debug/pprint" \
 
 curl -i "http://localhost:1996/api/v1/qnap/exporter/simple" \
 -H "Content-Type: application/json"
+
+curl -i "http://localhost:1996/api/v1/qnap/exporter/metrics/update" \
+-H "Content-Type: application/json"
 ```

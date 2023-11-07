@@ -1,61 +1,11 @@
-from datetime import datetime
 from flask import current_app as app
+from ..utils import global_get_now
 from ..common.domains import Domains
+from .domain_stats import DomainStats
 from .qnap_client import QNAPClient
 
 
 log = app.logger
-
-
-class DomainStats(object):
-    @classmethod
-    def get_now(cls):
-        return datetime.utcnow()
-
-    def __init__(self, domain, domain_func):
-        super().__init__()
-        self._stats = None
-        self._domain = domain
-        self._domain_func = domain_func
-        self._last_updated = None
-        self._created = self.get_now()
-
-    def __repr__(self):
-        return (f'DomainStats ==> domain: {self.domain} '
-                f'| created: {self.created} | '
-                f'last_updated: {self.last_updated} |')
-
-    @property
-    def created(self):
-        return self._created
-
-    @property
-    def last_updated(self):
-        return self._last_updated
-
-    @property
-    def domain(self):
-        return self._domain
-
-    @property
-    def domain_name(self):
-        return self.domain.value
-
-    @property
-    def stats(self):
-        return self._stats
-
-    def set_stats(self, stats):
-        self._stats = stats
-        self._last_updated = self.get_now()
-
-    @property
-    def domain_func(self):
-        return self._domain_func
-
-    def update_stats(self):
-        updated_stats = self._domain_func()
-        self.set_stats(updated_stats)
 
 
 class ExporterException(Exception):
@@ -76,6 +26,10 @@ class Exporter(object):
         self.qnap_client = qnap_client
         self._domains = None
         self._set_up_domains()
+
+    @classmethod
+    def get_now(cls):
+        return global_get_now()
 
     def __repr__(self):
         return f'Exporter => domains: {self.domains}'
@@ -111,11 +65,20 @@ class Exporter(object):
     def get_domain_stats(self, domain):
         return self.domains[domain]
 
-    def update_domain_stats(self, domain):
+    def update_domain_stats(self, domain, last_updated=None):
         domain_stats = self.get_domain_stats(domain)
-        domain_stats.update_stats()
+        domain_stats.update_stats(last_updated=last_updated)
 
-    def update_all_domains(self):
+    def update_all_domains_stats(self, last_updated=None):
+        if not last_updated:
+            # for a uniform timestamp for all the metrics fetched
+            last_updated = self.get_now()
         for domain, domain_stats in self.domains.items():
             log.info(f'updating stats for domain: {domain}')
-            domain_stats.update_stats()
+            domain_stats.update_stats(last_updated=last_updated)
+
+    def update_all_domains_metrics(self, check_first=True, last_updated=None):
+        # FIXME: check for `last_updated` first
+        for domain, domain_stats in self.domains.items():
+            log.info(f'updating metrics for domain: {domain}')
+            domain_stats.update_metrics()

@@ -5,11 +5,35 @@ from prometheus_flask_exporter import Counter, Summary, Gauge
 
 class Labels(Enum):
     DEVICE = 'device'
+    NETWORK_ID = 'network_id'
+    NETWORK_NAME = 'network_name'
+    IS_DEFAULT = 'is_default'
+    IP = 'ip'
+    MAC = 'mac'
+    MASK = 'mask'
+    USAGE = 'usage'
 
     @classmethod
     def labels(cls):
         return list([
             cls.DEVICE.value,
+        ])
+
+    @classmethod
+    def bandwidth_labels(cls):
+        return list([
+            cls.NETWORK_ID.value,
+            cls.NETWORK_NAME.value,
+            cls.IS_DEFAULT.value,
+        ])
+
+    @classmethod
+    def nics_labels(cls):
+        return list([
+            cls.NETWORK_ID.value,
+            cls.IP.value,
+            cls.MAC.value,
+            cls.USAGE.value,
         ])
 
 
@@ -61,6 +85,36 @@ class Metrics(object):
     SYSTEM_STATS_UPTIME_SECONDS = Gauge(
         'qnap_exporter_system_stats_uptime_seconds',
         'The total system uptime of the QNAP in seconds')
+
+    SYSTEM_STATS_NICS_RX_PACKETS = Gauge(
+        'qnap_exporter_system_stats_nics_rx_packets',
+        'The QNAP system stats nics rx_packets',
+        Labels.nics_labels())
+
+    SYSTEM_STATS_NICS_TX_PACKETS = Gauge(
+        'qnap_exporter_system_stats_nics_tx_packets',
+        'The QNAP system stats nics tx_packets',
+        Labels.nics_labels())
+
+    SYSTEM_STATS_NICS_ERR_PACKETS = Gauge(
+        'qnap_exporter_system_stats_nics_err_packets',
+        'The QNAP system stats nics err_packets',
+        Labels.nics_labels())
+
+    SYSTEM_STATS_NICS_MAX_SPEED = Gauge(
+        'qnap_exporter_system_stats_nics_max_speed',
+        'The QNAP system stats nics max speed',
+        Labels.nics_labels())
+
+    BANDWIDTH_INTERFACE_RX = Gauge(
+        'qnap_exporter_bandwidth_interface_rx',
+        'The QNAP bandwidth network interface rx value',
+        Labels.bandwidth_labels())
+
+    BANDWIDTH_INTERFACE_TX = Gauge(
+        'qnap_exporter_bandwidth_interface_tx',
+        'The QNAP bandwidth network interface tx value',
+        Labels.bandwidth_labels())
 
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern

@@ -19,6 +19,8 @@ class Labels(Enum):
     DISK_ID = 'disk_id'
     DISK_TYPE = 'disk_type'
     DRIVE_NUMBER = 'drive_number'
+    SERIAL = 'serial'
+    UNITS = 'units'
 
     @classmethod
     def labels(cls):
@@ -57,7 +59,19 @@ class Labels(Enum):
             cls.DISK_ID.value,
             cls.DRIVE_NUMBER.value,
             cls.MODEL.value,
+            cls.SERIAL.value,
             cls.DISK_TYPE.value,
+        ])
+
+    @classmethod
+    def smart_disk_capacity_labels(cls):
+        return list([
+            cls.DISK_ID.value,
+            cls.DRIVE_NUMBER.value,
+            cls.MODEL.value,
+            cls.SERIAL.value,
+            cls.DISK_TYPE.value,
+            cls.UNITS.value,
         ])
 
 
@@ -159,6 +173,11 @@ class Metrics(object):
         'qnap_exporter_smart_disk_health_temp_f',
         'Current temp of disk in Fahrenheit',
         Labels.smart_disk_labels())
+
+    SMART_DISK_HEALTH_CAPACITY_VALUE = Gauge(
+        'qnap_exporter_smart_disk_health_capacity',
+        'Current capacity of disk in dynamically labelled units',
+        Labels.smart_disk_capacity_labels())
 
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern

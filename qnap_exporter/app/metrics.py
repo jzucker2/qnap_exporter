@@ -12,6 +12,9 @@ class Labels(Enum):
     MAC = 'mac'
     MASK = 'mask'
     USAGE = 'usage'
+    VOLUME_ID = 'volume_id'
+    VOLUME_ID_NUMBER = 'volume_id_number'
+    VOLUME_LABEL = 'volume_label'
 
     @classmethod
     def labels(cls):
@@ -34,6 +37,14 @@ class Labels(Enum):
             cls.IP.value,
             cls.MAC.value,
             cls.USAGE.value,
+        ])
+
+    @classmethod
+    def volume_labels(cls):
+        return list([
+            cls.VOLUME_ID.value,
+            cls.VOLUME_ID_NUMBER.value,
+            cls.VOLUME_LABEL.value,
         ])
 
 
@@ -115,6 +126,16 @@ class Metrics(object):
         'qnap_exporter_bandwidth_interface_tx',
         'The QNAP bandwidth network interface tx value',
         Labels.bandwidth_labels())
+
+    VOLUME_FREE_SIZE = Gauge(
+        'qnap_exporter_volume_free_size',
+        'The QNAP volume free size (bytes?)',
+        Labels.volume_labels())
+
+    VOLUME_TOTAL_SIZE = Gauge(
+        'qnap_exporter_volume_total_size',
+        'The QNAP volume total size (bytes?)',
+        Labels.volume_labels())
 
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern

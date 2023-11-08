@@ -5,6 +5,17 @@ from .base_processor import BaseProcessorException, BaseProcessor
 log = app.logger
 
 
+class SmartDiskDictKeys(object):
+    CAPACITY = 'capacity'
+    DRIVE_NUMBER = 'drive_number'
+    HEALTH = 'health'
+    MODEL = 'model'
+    SERIAL = 'serial'
+    TEMP_C = 'temp_c'
+    TEMP_F = 'temp_f'
+    TYPE = 'type'
+
+
 class SmartDiskHealthProcessorException(BaseProcessorException):
     pass
 

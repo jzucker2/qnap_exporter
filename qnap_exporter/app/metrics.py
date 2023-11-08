@@ -58,6 +58,10 @@ class Metrics(object):
         'qnap_exporter_system_stats_memory_total',
         'The total system memory of the QNAP')
 
+    SYSTEM_STATS_UPTIME_SECONDS = Gauge(
+        'qnap_exporter_system_stats_uptime_seconds',
+        'The total system uptime of the QNAP in seconds')
+
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern
 # https://github.com/rycus86/prometheus_flask_exporter/blob/master/examples/gunicorn-app-factory/app_setup.py

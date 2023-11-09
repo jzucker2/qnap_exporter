@@ -23,13 +23,23 @@ class SmartDiskHealthProcessorException(BaseProcessorException):
 
 class SmartDiskHealthProcessor(BaseProcessor):
     @classmethod
+    def _process_capacity(cls, disk_id, disk_stats):
+        capacity = disk_stats.get(SmartDiskDictKeys.CAPACITY)
+        capacity_pieces = capacity.split(' ')
+        size = capacity_pieces[0]
+        units = capacity_pieces[1]
+        c_m = (f'for disk_id: {disk_id} got '
+               f'size: {size} for units: {units}')
+        log.info(c_m)
+        return size, units
+
+    @classmethod
     def _handle_smart_disk(cls, smart_disk_id, smart_disk_stats):
         if not smart_disk_stats:
             return
-        # TODO: add capacity (probably need to convert something)
-        # capacity = smart_disk_stats.get(SmartDiskDictKeys.CAPACITY)
         drive_number = smart_disk_stats.get(SmartDiskDictKeys.DRIVE_NUMBER)
         model = smart_disk_stats.get(SmartDiskDictKeys.MODEL)
+        serial = smart_disk_stats.get(SmartDiskDictKeys.SERIAL)
         temp_c = smart_disk_stats.get(SmartDiskDictKeys.TEMP_C)
         temp_f = smart_disk_stats.get(SmartDiskDictKeys.TEMP_F)
         disk_type = smart_disk_stats.get(SmartDiskDictKeys.TYPE)
@@ -37,14 +47,27 @@ class SmartDiskHealthProcessor(BaseProcessor):
             disk_id=smart_disk_id,
             drive_number=drive_number,
             model=model,
+            serial=serial,
             disk_type=disk_type,
         ).set(temp_c)
         Metrics.SMART_DISK_HEALTH_TEMP_F_VALUE.labels(
             disk_id=smart_disk_id,
             drive_number=drive_number,
             model=model,
+            serial=serial,
             disk_type=disk_type,
         ).set(temp_f)
+        capacity, units = cls._process_capacity(
+            smart_disk_id,
+            smart_disk_stats)
+        Metrics.SMART_DISK_HEALTH_CAPACITY_VALUE.labels(
+            disk_id=smart_disk_id,
+            drive_number=drive_number,
+            model=model,
+            serial=serial,
+            disk_type=disk_type,
+            units=units
+        ).set(capacity)
 
     @classmethod
     def process(cls, stats, last_updated=None):

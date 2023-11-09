@@ -15,10 +15,13 @@ class Labels(Enum):
     VOLUME_ID = 'volume_id'
     VOLUME_ID_NUMBER = 'volume_id_number'
     VOLUME_LABEL = 'volume_label'
+    SHARENAME = 'sharename'
     MODEL = 'model'
     DISK_ID = 'disk_id'
     DISK_TYPE = 'disk_type'
     DRIVE_NUMBER = 'drive_number'
+    SERIAL = 'serial'
+    UNITS = 'units'
 
     @classmethod
     def labels(cls):
@@ -52,12 +55,33 @@ class Labels(Enum):
         ])
 
     @classmethod
+    def volume_folder_labels(cls):
+        return list([
+            cls.VOLUME_ID.value,
+            cls.VOLUME_ID_NUMBER.value,
+            cls.VOLUME_LABEL.value,
+            cls.SHARENAME.value,
+        ])
+
+    @classmethod
     def smart_disk_labels(cls):
         return list([
             cls.DISK_ID.value,
             cls.DRIVE_NUMBER.value,
             cls.MODEL.value,
+            cls.SERIAL.value,
             cls.DISK_TYPE.value,
+        ])
+
+    @classmethod
+    def smart_disk_capacity_labels(cls):
+        return list([
+            cls.DISK_ID.value,
+            cls.DRIVE_NUMBER.value,
+            cls.MODEL.value,
+            cls.SERIAL.value,
+            cls.DISK_TYPE.value,
+            cls.UNITS.value,
         ])
 
 
@@ -93,6 +117,14 @@ class Metrics(object):
     SYSTEM_STATS_CPU_TEMP_F_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_f',
         'Current temp of CPU in Fahrenheit')
+
+    SYSTEM_STATS_SYSTEM_TEMP_C_VALUE = Gauge(
+        'qnap_exporter_system_stats_system_temp_c',
+        'Current temp of entire QNAP system in Celsius')
+
+    SYSTEM_STATS_SYSTEM_TEMP_F_VALUE = Gauge(
+        'qnap_exporter_system_stats_system_temp_f',
+        'Current temp of entire QNAP system in Fahrenheit')
 
     SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_usage_percent',
@@ -150,6 +182,11 @@ class Metrics(object):
         'The QNAP volume total size (bytes?)',
         Labels.volume_labels())
 
+    VOLUME_FOLDER_USED_SIZE = Gauge(
+        'qnap_exporter_volume_folder_used_size',
+        'The QNAP volume folder used size (bytes?)',
+        Labels.volume_folder_labels())
+
     SMART_DISK_HEALTH_TEMP_C_VALUE = Gauge(
         'qnap_exporter_smart_disk_health_temp_c',
         'Current temp of disk in Celsius',
@@ -159,6 +196,11 @@ class Metrics(object):
         'qnap_exporter_smart_disk_health_temp_f',
         'Current temp of disk in Fahrenheit',
         Labels.smart_disk_labels())
+
+    SMART_DISK_HEALTH_CAPACITY_VALUE = Gauge(
+        'qnap_exporter_smart_disk_health_capacity',
+        'Current capacity of disk in dynamically labelled units',
+        Labels.smart_disk_capacity_labels())
 
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern

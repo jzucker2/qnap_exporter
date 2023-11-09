@@ -108,6 +108,14 @@ class Metrics(object):
         'qnap_exporter_system_stats_cpu_temp_f',
         'Current temp of CPU in Fahrenheit')
 
+    SYSTEM_STATS_SYSTEM_TEMP_C_VALUE = Gauge(
+        'qnap_exporter_system_stats_system_temp_c',
+        'Current temp of entire QNAP system in Celsius')
+
+    SYSTEM_STATS_SYSTEM_TEMP_F_VALUE = Gauge(
+        'qnap_exporter_system_stats_system_temp_f',
+        'Current temp of entire QNAP system in Fahrenheit')
+
     SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_usage_percent',
         'Current system CPU usage percentage')

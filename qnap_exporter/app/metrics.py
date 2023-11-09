@@ -15,6 +15,7 @@ class Labels(Enum):
     VOLUME_ID = 'volume_id'
     VOLUME_ID_NUMBER = 'volume_id_number'
     VOLUME_LABEL = 'volume_label'
+    SHARENAME = 'sharename'
     MODEL = 'model'
     DISK_ID = 'disk_id'
     DISK_TYPE = 'disk_type'
@@ -51,6 +52,15 @@ class Labels(Enum):
             cls.VOLUME_ID.value,
             cls.VOLUME_ID_NUMBER.value,
             cls.VOLUME_LABEL.value,
+        ])
+
+    @classmethod
+    def volume_folder_labels(cls):
+        return list([
+            cls.VOLUME_ID.value,
+            cls.VOLUME_ID_NUMBER.value,
+            cls.VOLUME_LABEL.value,
+            cls.SHARENAME.value,
         ])
 
     @classmethod
@@ -171,6 +181,11 @@ class Metrics(object):
         'qnap_exporter_volume_total_size',
         'The QNAP volume total size (bytes?)',
         Labels.volume_labels())
+
+    VOLUME_FOLDER_USED_SIZE = Gauge(
+        'qnap_exporter_volume_folder_used_size',
+        'The QNAP volume folder used size (bytes?)',
+        Labels.volume_folder_labels())
 
     SMART_DISK_HEALTH_TEMP_C_VALUE = Gauge(
         'qnap_exporter_smart_disk_health_temp_c',

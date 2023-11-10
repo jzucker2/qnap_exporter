@@ -30,10 +30,10 @@ def perform_qnap_metrics_update():
 
     Added when app starts.
     """
-    log.info("running qnap_metrics_update!")
+    log.debug("running qnap_metrics_update!")
 
     with scheduler.app.app_context():
         router = ExporterRouter()
         response = router.handle_exporter_metrics_update_route_response()
         r_m = f'scheduled qnap metrics update got response: {response}'
-        log.info(r_m)
+        log.debug(r_m)

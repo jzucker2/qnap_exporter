@@ -69,12 +69,16 @@ class Exporter(object):
         domain_stats = self.get_domain_stats(domain)
         domain_stats.update_stats(last_updated=last_updated)
 
-    def update_all_domains_stats(self, last_updated=None):
+    def fetch_all_domains_stats(self, last_updated=None):
         if not last_updated:
             # for a uniform timestamp for all the metrics fetched
             last_updated = self.get_now()
+        a_m = f'fetching all domains stats for last_updated: {last_updated}'
+        log.info(a_m)
         for domain, domain_stats in self.domains.items():
-            log.info(f'updating stats for domain: {domain}')
+            d_m = (f'fetching stats for domain: {domain} '
+                   f'at last_updated: {last_updated}')
+            log.debug(d_m)
             domain_stats.update_stats(last_updated=last_updated)
 
     def update_all_domains_metrics(self, check_first=True, last_updated=None):

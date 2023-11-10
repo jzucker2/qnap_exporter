@@ -30,7 +30,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
         units = capacity_pieces[1]
         c_m = (f'for disk_id: {disk_id} got '
                f'size: {size} for units: {units}')
-        log.info(c_m)
+        log.debug(c_m)
         return size, units
 
     @classmethod
@@ -73,6 +73,6 @@ class SmartDiskHealthProcessor(BaseProcessor):
     def process(cls, stats, last_updated=None):
         m = (f'_process_smart_disk_health => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         for key, value in stats.items():
             cls._handle_smart_disk(key, value)

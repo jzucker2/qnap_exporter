@@ -54,7 +54,7 @@ class SystemStatsProcessorException(BaseProcessorException):
 class SystemStatsProcessor(BaseProcessor):
     @classmethod
     def _convert_uptime_dict(cls, uptime_dict):
-        log.info(f'starting with uptime_dict: {uptime_dict}')
+        log.debug(f'starting with uptime_dict: {uptime_dict}')
         days = uptime_dict[UptimeDictKeys.DAYS]
         hours = uptime_dict[UptimeDictKeys.HOURS]
         minutes = uptime_dict[UptimeDictKeys.MINUTES]
@@ -68,13 +68,13 @@ class SystemStatsProcessor(BaseProcessor):
         f_m = (f'converted uptime_dict: {uptime_dict} '
                f'to uptime_delta: {uptime_delta} with '
                f'total_seconds: {total_seconds}')
-        log.info(f_m)
+        log.debug(f_m)
         return total_seconds
 
     @classmethod
     def _handle_system_dict(cls, stats):
         system = stats.get(SystemStatsKeys.SYSTEM)
-        log.info(f'system: {system}')
+        log.debug(f'system: {system}')
         temp_c = system.get(SystemDictKeys.TEMP_C)
         temp_f = system.get(SystemDictKeys.TEMP_F)
         Metrics.SYSTEM_STATS_SYSTEM_TEMP_C_VALUE.set(temp_c)
@@ -83,7 +83,7 @@ class SystemStatsProcessor(BaseProcessor):
     @classmethod
     def _handle_uptime_dict(cls, stats):
         uptime = stats.get(SystemStatsKeys.UPTIME)
-        log.info(f'uptime: {uptime}')
+        log.debug(f'uptime: {uptime}')
         uptime_seconds = cls._convert_uptime_dict(uptime)
         Metrics.SYSTEM_STATS_UPTIME_SECONDS.set(uptime_seconds)
 
@@ -96,7 +96,7 @@ class SystemStatsProcessor(BaseProcessor):
         Metrics.SYSTEM_STATS_MEMORY_FREE_VALUE.set(free)
         total = memory.get(MemoryDictKeys.TOTAL, 0)
         Metrics.SYSTEM_STATS_MEMORY_TOTAL_VALUE.set(total)
-        log.info(f'memory stats => {free}/{total}')
+        log.debug(f'memory stats => {free}/{total}')
 
     @classmethod
     def _handle_cpu_dict(cls, stats):
@@ -109,7 +109,7 @@ class SystemStatsProcessor(BaseProcessor):
         Metrics.SYSTEM_STATS_CPU_TEMP_F_VALUE.set(temp_f)
         usage_percent = cpu.get(CPUDictKeys.USAGE_PERCENT, 0)
         Metrics.SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE.set(usage_percent)
-        log.info(f'cpu stats => {temp_c}, {temp_f}, {usage_percent}')
+        log.debug(f'cpu stats => {temp_c}, {temp_f}, {usage_percent}')
 
     @classmethod
     def _handle_nics_interface(cls, network_id, network_stats):
@@ -158,7 +158,7 @@ class SystemStatsProcessor(BaseProcessor):
     def process(cls, stats, last_updated=None):
         m = (f'_process_system_stats => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         cls._handle_cpu_dict(stats)
         cls._handle_memory_dict(stats)
         cls._handle_uptime_dict(stats)

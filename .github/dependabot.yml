@@ -41,3 +41,5 @@ updates:
     allow:
       # allow updates for specific clients
       - dependency-name: "qnapstats"
+      - dependency-name: "Flask-APScheduler"
+      - dependency-name: "tenacity"

@@ -2,7 +2,7 @@
 from flask import Flask
 from . import config
 from . import database
-from .extensions import migrate, cors
+from .extensions import migrate, cors, scheduler
 from .metrics import metrics
 
 
@@ -17,6 +17,9 @@ def create_app(config=config.base_config):
         log_level = app.config.get('QNAP_EXPORTER_LOGGING_LEVEL')
         app.logger.setLevel(log_level)
         app.logger.debug(f'!!!!!!!!!!! Set log_level: {log_level}')
+
+        # Include our Tasks
+        from .tasks import qnap  # noqa: F401
 
         register_extensions(app)
 
@@ -51,6 +54,9 @@ def register_extensions(app):
                         f'{migration_directory}'
     app.logger.debug(migration_message)
     migrate.init_app(app, db=db, directory=migration_directory)
+    # scheduler
+    scheduler.init_app(app)
+    scheduler.start()
     # TODO: do we need the below??
     # db.create_all()
 

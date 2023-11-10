@@ -95,7 +95,7 @@ class DomainStats(object):
         last_updated = self.last_updated
         m = (f'_process_system_stats => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         SystemStatsProcessor.process(stats, last_updated=last_updated)
 
     def _process_system_health(self):
@@ -103,7 +103,7 @@ class DomainStats(object):
         last_updated = self.last_updated
         m = (f'_process_system_health => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         SystemHealthProcessor.process(stats, last_updated=last_updated)
 
     def _process_volumes(self):
@@ -111,7 +111,7 @@ class DomainStats(object):
         last_updated = self.last_updated
         m = (f'_process_volumes => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         VolumesProcessor.process(stats, last_updated=last_updated)
 
     def _process_smart_disk_health(self):
@@ -119,7 +119,7 @@ class DomainStats(object):
         last_updated = self.last_updated
         m = (f'_process_smart_disk_health => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         SmartDiskHealthProcessor.process(stats, last_updated=last_updated)
 
     def _process_bandwidth(self):
@@ -127,5 +127,5 @@ class DomainStats(object):
         last_updated = self.last_updated
         m = (f'_process_bandwidth => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         BandwidthProcessor.process(stats, last_updated=last_updated)

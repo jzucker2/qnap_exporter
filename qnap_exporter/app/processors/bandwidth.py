@@ -23,7 +23,7 @@ class BandwidthProcessor(BaseProcessor):
         h_m = (f'_handle_network interface for '
                f'network_id: {network_id} with '
                f'network_stats: {network_stats}')
-        log.info(h_m)
+        log.debug(h_m)
         name = network_stats.get(NetworkInterfaceDictKeys.NAME)
         rx = network_stats.get(NetworkInterfaceDictKeys.RX, 0)
         tx = network_stats.get(NetworkInterfaceDictKeys.TX, 0)
@@ -43,6 +43,6 @@ class BandwidthProcessor(BaseProcessor):
     def process(cls, stats, last_updated=None):
         m = (f'_process_bandwidth => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         for key, value in stats.items():
             cls._handle_network_interface(key, value)

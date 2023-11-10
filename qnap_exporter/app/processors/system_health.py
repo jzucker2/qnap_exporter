@@ -14,4 +14,4 @@ class SystemHealthProcessor(BaseProcessor):
     def process(cls, stats, last_updated=None):
         m = (f'_process_system_health => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)

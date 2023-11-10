@@ -32,4 +32,4 @@ RUN ["sh", "set_up_db.sh"]
 
 FROM app_setup AS run_server
 # can use `run_dev.sh` or `run_prod.sh`
-CMD ["sh", "run_dev.sh"]
+CMD ["sh", "run_prod.sh"]

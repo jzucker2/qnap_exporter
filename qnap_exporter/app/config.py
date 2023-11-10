@@ -26,7 +26,7 @@ ENV_QNAP_EXPORTER_HOST = os.getenv(
     default="0.0.0.0")
 ENV_QNAP_EXPORTER_PORT = int(os.getenv(
     "QNAP_EXPORTER_PORT",
-    default=1996))
+    default=2003))
 
 
 class base_config(object):

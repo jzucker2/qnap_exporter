@@ -63,6 +63,19 @@ class VolumesProcessor(BaseProcessor):
             volume_id_number=id_number,
             volume_label=label,
         ).set(total_size)
+        used_size = total_size - free_size
+        Metrics.VOLUME_USED_SIZE.labels(
+            volume_id=volume_id,
+            volume_id_number=id_number,
+            volume_label=label,
+        ).set(used_size)
+        usage = used_size / total_size
+        Metrics.VOLUME_USAGE_PERCENT.labels(
+            volume_id=volume_id,
+            volume_id_number=id_number,
+            volume_label=label,
+        ).set(usage)
+        # TODO: pass in size values so we can calculate the folder percentages
         cls._iterate_volume_folders(volume_id, id_number, label, volume_stats)
 
     @classmethod

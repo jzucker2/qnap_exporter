@@ -18,6 +18,9 @@ def create_app(config=config.base_config):
         app.logger.setLevel(log_level)
         app.logger.debug(f'!!!!!!!!!!! Set log_level: {log_level}')
 
+        # Include our Tasks
+        from .tasks import qnap  # noqa: F401
+
         register_extensions(app)
 
         @app.route("/")

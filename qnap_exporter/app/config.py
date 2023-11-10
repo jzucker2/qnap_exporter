@@ -97,6 +97,12 @@ class base_config(object):
     # Flask-APScheduler
     SCHEDULER_API_ENABLED = True
 
+    # metrics check configuration
+    DEFAULT_METRICS_INTERVAL_SECONDS = 60
+    METRICS_INTERVAL_SECONDS = int(os.getenv(
+        "METRICS_INTERVAL_SECONDS",
+        default=DEFAULT_METRICS_INTERVAL_SECONDS))
+
 
 class dev_config(base_config):
     """Development configuration options."""

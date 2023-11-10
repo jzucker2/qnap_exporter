@@ -7,7 +7,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: [ 'sh', 'run_prod.sh' ]
     restart: always
     extra_hosts:
       - "host.docker.internal:host-gateway"

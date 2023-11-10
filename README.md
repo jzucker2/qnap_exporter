@@ -20,7 +20,6 @@ services:
   qnap_exporter:
     container_name: qnap_exporter
     image: ghcr.io/jzucker2/qnap_exporter:latest
-    command: [ 'sh', 'run_prod.sh' ]
     restart: always
     extra_hosts:
       - "host.docker.internal:host-gateway"

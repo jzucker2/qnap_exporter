@@ -3,7 +3,7 @@
 ```
 jordanz@Jordans-MBP-2:~/Coding/qnap_exporter (convert-to-prom-metrics * u+2)$ docker compose logs qnap_exporter
 qnap_exporter  | [2023-11-06 07:53:00 +0000] [7] [INFO] Starting gunicorn 20.1.0
-qnap_exporter  | [2023-11-06 07:53:00 +0000] [7] [INFO] Listening at: http://0.0.0.0:1996 (7)
+qnap_exporter  | [2023-11-06 07:53:00 +0000] [7] [INFO] Listening at: http://0.0.0.0:2003 (7)
 qnap_exporter  | [2023-11-06 07:53:00 +0000] [7] [INFO] Using worker: sync
 qnap_exporter  | [2023-11-06 07:53:00 +0000] [9] [INFO] Booting worker with pid: 9
 qnap_exporter  | [2023-11-06 07:53:00 +0000] [10] [INFO] Booting worker with pid: 10

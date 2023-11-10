@@ -69,7 +69,7 @@ class VolumesProcessor(BaseProcessor):
             volume_id_number=id_number,
             volume_label=label,
         ).set(used_size)
-        usage = used_size / total_size
+        usage = (used_size / total_size) * 100
         Metrics.VOLUME_USAGE_PERCENT.labels(
             volume_id=volume_id,
             volume_id_number=id_number,

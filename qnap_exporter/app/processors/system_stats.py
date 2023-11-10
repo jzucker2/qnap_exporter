@@ -102,7 +102,7 @@ class SystemStatsProcessor(BaseProcessor):
         usage = (used / total) * 100
         u_m = f'_handle_memory_dict got usage: {usage} from ({used}/{total})'
         log.info(u_m)
-        Metrics.SYSTEM_STATS_MEMORY_USAGE_PERCENT.set(used)
+        Metrics.SYSTEM_STATS_MEMORY_USAGE_PERCENT.set(usage)
 
     @classmethod
     def _handle_cpu_dict(cls, stats):

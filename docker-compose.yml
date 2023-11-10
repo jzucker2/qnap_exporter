@@ -12,8 +12,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "1996:1996"
-      - "9200:9200"
+      - "2003:2003"
+      - "1805:1805"
     environment:
       - QNAP_HOST_IP=10.0.1.1
       - QNAP_USERNAME=admin

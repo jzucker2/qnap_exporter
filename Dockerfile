@@ -26,7 +26,7 @@ ENV FLASK_APP=app
 FROM source_code AS app_setup
 ENV PROMETHEUS_MULTIPROC_DIR /tmp
 ENV prometheus_multiproc_dir /tmp
-ENV METRICS_PORT 9200
+ENV METRICS_PORT 1805
 
 RUN ["sh", "set_up_db.sh"]
 

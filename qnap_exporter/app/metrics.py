@@ -138,6 +138,14 @@ class Metrics(object):
         'qnap_exporter_system_stats_memory_total',
         'The total system memory of the QNAP')
 
+    SYSTEM_STATS_MEMORY_USED_VALUE = Gauge(
+        'qnap_exporter_system_stats_memory_used',
+        'The used system memory of the QNAP')
+
+    SYSTEM_STATS_MEMORY_USAGE_PERCENT = Gauge(
+        'qnap_exporter_system_stats_memory_usage_percent',
+        'The % of system memory currently being used of the QNAP')
+
     SYSTEM_STATS_UPTIME_SECONDS = Gauge(
         'qnap_exporter_system_stats_uptime_seconds',
         'The total system uptime of the QNAP in seconds')
@@ -180,6 +188,16 @@ class Metrics(object):
     VOLUME_TOTAL_SIZE = Gauge(
         'qnap_exporter_volume_total_size',
         'The QNAP volume total size (bytes?)',
+        Labels.volume_labels())
+
+    VOLUME_USED_SIZE = Gauge(
+        'qnap_exporter_volume_used_size',
+        'The QNAP volume used size (bytes?)',
+        Labels.volume_labels())
+
+    VOLUME_USAGE_PERCENT = Gauge(
+        'qnap_exporter_volume_usage_percent',
+        'The QNAP volume usage %',
         Labels.volume_labels())
 
     VOLUME_FOLDER_USED_SIZE = Gauge(

@@ -97,6 +97,12 @@ class SystemStatsProcessor(BaseProcessor):
         total = memory.get(MemoryDictKeys.TOTAL, 0)
         Metrics.SYSTEM_STATS_MEMORY_TOTAL_VALUE.set(total)
         log.debug(f'memory stats => {free}/{total}')
+        used = total - free
+        Metrics.SYSTEM_STATS_MEMORY_USED_VALUE.set(used)
+        usage = (used / total) * 100
+        u_m = f'_handle_memory_dict got usage: {usage} from ({used}/{total})'
+        log.debug(u_m)
+        Metrics.SYSTEM_STATS_MEMORY_USAGE_PERCENT.set(usage)
 
     @classmethod
     def _handle_cpu_dict(cls, stats):

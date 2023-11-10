@@ -94,6 +94,9 @@ class base_config(object):
     QNAP_PASSWORD = os.getenv("QNAP_PASSWORD",
                               default=DEFAULT_QNAP_PASSWORD)
 
+    # Flask-APScheduler
+    SCHEDULER_API_ENABLED = True
+
 
 class dev_config(base_config):
     """Development configuration options."""

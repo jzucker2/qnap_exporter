@@ -2,7 +2,7 @@
 from flask import Flask
 from . import config
 from . import database
-from .extensions import migrate, cors
+from .extensions import migrate, cors, scheduler
 from .metrics import metrics
 
 
@@ -51,6 +51,9 @@ def register_extensions(app):
                         f'{migration_directory}'
     app.logger.debug(migration_message)
     migrate.init_app(app, db=db, directory=migration_directory)
+    # scheduler
+    scheduler.init_app(app)
+    scheduler.start()
     # TODO: do we need the below??
     # db.create_all()
 

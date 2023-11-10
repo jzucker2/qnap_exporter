@@ -14,8 +14,11 @@ services:
       - "2003:2003"
       - "1805:1805"
     environment:
-      - QNAP_HOST_IP=10.0.1.1
-      - QNAP_USERNAME=admin
-      - QNAP_PASSWORD=password
+      # like `10.0.1.1` or `qnap`
+      - QNAP_HOST_IP=${QNAP_NAS_IP}
+      # like `admin` or `jordan`
+      - QNAP_USERNAME=${QNAP_NAS_USERNAME}
+      # hopefully something secret!
+      - QNAP_PASSWORD=${QNAP_NAS_PASSWORD}
     stdin_open: true
     tty: true

@@ -34,6 +34,17 @@ services:
     tty: true
 ```
 
+#### Env File
+
+If you want to use an `.env` file like in the 
+root of the repo, here is an example:
+
+```
+QNAP_NAS_IP=10.0.1.1
+QNAP_NAS_USERNAME=admin
+QNAP_NAS_PASSWORD=password
+```
+
 ### Prometheus Config
 
 Include this in your `prometheus.yml`

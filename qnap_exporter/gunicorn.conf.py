@@ -14,7 +14,8 @@ def child_exit(server, worker):
 
 # https://docs.gunicorn.org/en/latest/configure.html
 bind = "0.0.0.0:1996"
-# FIXME: If this is a webserver, we can have more than 1, but we need to solve for scheduler
-#  with DB and/or a semaphore. For now, avoid by keeping workers limited to 1, since this is
-#  really just a prometheus exporter. But in the future I could stick a dashboard on this.
+# FIXME: If this is a webserver, we can have more than 1, but we need to
+#  solve for scheduler with DB and/or a semaphore. For now, avoid by
+#  keeping workers limited to 1, since this is really just a
+#  prometheus exporter. But in the future I could stick a dashboard on this.
 workers = 1

@@ -72,7 +72,7 @@ class VolumesProcessor(BaseProcessor):
         usage = (used_size / total_size) * 100
         u_m = (f'_handle_volume ({volume_id}) got '
                f'usage: {usage} from ({used_size}/{total_size})')
-        log.info(u_m)
+        log.debug(u_m)
         Metrics.VOLUME_USAGE_PERCENT.labels(
             volume_id=volume_id,
             volume_id_number=id_number,

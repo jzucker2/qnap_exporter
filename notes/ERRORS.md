@@ -1,5 +1,14 @@
 # Errors
 
+## To Do
+
+- [ ] simple retry (with `tenacity`)
+- [ ] network timeouts
+- [ ] invalid JSON
+- [ ] reset metrics to 0 when failing to get data (so graphs can dip appropriately)
+
+## Debug Data
+
 ```
 qnap_exporter  | [2023-11-10 01:20:00,022] INFO in exporter: fetching all domains stats for last_updated: 2023-11-10 01:20:00.022104
 qnap_exporter  | [2023-11-10 01:20:04,929] INFO in exporter: updating metrics for domain: Domains.SYSTEM_STATS

@@ -1,3 +1,4 @@
+from requests.exceptions import RequestException
 from flask import current_app as app
 from qnapstats import QNAPStats
 
@@ -12,6 +13,10 @@ QNAP_PASSWORD = app.config.get('QNAP_PASSWORD')
 
 
 class QNAPClientException(Exception):
+    pass
+
+
+class QNAPClientRequestException(QNAPClientException):
     pass
 
 
@@ -34,19 +39,43 @@ class QNAPClient(object):
             verify_ssl=verify_ssl)
 
     def get_system_health(self):
-        return self.client.get_system_health()
+        try:
+            return self.client.get_system_health()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)
 
     def get_volumes(self):
-        return self.client.get_volumes()
+        try:
+            return self.client.get_volumes()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)
 
     def get_bandwidth(self):
-        return self.client.get_bandwidth()
+        try:
+            return self.client.get_bandwidth()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)
 
     def get_system_stats(self):
-        return self.client.get_system_stats()
+        try:
+            return self.client.get_system_stats()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)
 
     def get_smart_disk_health(self):
-        return self.client.get_smart_disk_health()
+        try:
+            return self.client.get_smart_disk_health()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)
 
     def get_firmware_update(self):
-        return self.client.get_firmware_update()
+        try:
+            return self.client.get_firmware_update()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)

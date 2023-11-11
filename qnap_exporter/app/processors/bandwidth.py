@@ -44,5 +44,7 @@ class BandwidthProcessor(BaseProcessor):
         m = (f'_process_bandwidth => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
+        if not stats:
+            return
         for key, value in stats.items():
             cls._handle_network_interface(key, value)

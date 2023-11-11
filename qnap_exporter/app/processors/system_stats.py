@@ -165,6 +165,8 @@ class SystemStatsProcessor(BaseProcessor):
         m = (f'_process_system_stats => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
+        if not stats:
+            return
         cls._handle_cpu_dict(stats)
         cls._handle_memory_dict(stats)
         cls._handle_uptime_dict(stats)

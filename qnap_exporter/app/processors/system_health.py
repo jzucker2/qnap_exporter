@@ -15,3 +15,5 @@ class SystemHealthProcessor(BaseProcessor):
         m = (f'_process_system_health => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
+        if not stats:
+            return

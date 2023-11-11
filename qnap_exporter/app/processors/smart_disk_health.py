@@ -74,5 +74,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
         m = (f'_process_smart_disk_health => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
+        if not stats:
+            return
         for key, value in stats.items():
             cls._handle_smart_disk(key, value)

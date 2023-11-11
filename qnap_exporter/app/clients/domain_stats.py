@@ -1,6 +1,7 @@
 from flask import current_app as app
 from ..utils import global_get_now
 from ..common.domains import Domains
+from ..clients.qnap_client import QNAPClientException
 from ..processors.system_stats import SystemStatsProcessor
 from ..processors.system_health import SystemHealthProcessor
 from ..processors.smart_disk_health import SmartDiskHealthProcessor
@@ -71,8 +72,19 @@ class DomainStats(object):
         return self._domain_func
 
     def update_stats(self, last_updated=None):
-        updated_stats = self._domain_func()
-        self.set_stats(updated_stats, last_updated=last_updated)
+        # TODO: perfect spot to create empty stats and update,
+        #  that way we can 0 out if we can't connect
+        try:
+            updated_stats = self._domain_func()
+            self.set_stats(updated_stats, last_updated=last_updated)
+        except QNAPClientException as qe:
+            q_m = f'update_stats domain: {self.domain_name} => qe: {qe}'
+            log.error(q_m)
+        except Exception as unexp:
+            u_m = f'update_stats domain: {self.domain_name} => unexp: {unexp}'
+            log.error(u_m)
+        else:
+            self.set_stats(updated_stats, last_updated=last_updated)
 
     def update_metrics(self):
         if self.domain == Domains.SYSTEM_STATS:

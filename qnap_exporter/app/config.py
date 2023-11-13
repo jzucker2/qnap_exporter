@@ -98,7 +98,7 @@ class base_config(object):
     SCHEDULER_API_ENABLED = True
 
     # metrics check configuration
-    DEFAULT_METRICS_INTERVAL_SECONDS = 60
+    DEFAULT_METRICS_INTERVAL_SECONDS = 30
     METRICS_INTERVAL_SECONDS = int(os.getenv(
         "METRICS_INTERVAL_SECONDS",
         default=DEFAULT_METRICS_INTERVAL_SECONDS))

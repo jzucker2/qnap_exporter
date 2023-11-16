@@ -73,7 +73,7 @@ class base_config(object):
 
     QNAP_EXPORTER_LOGGING_LEVEL = os.environ.get(
         'QNAP_EXPORTER_LOGGING_LEVEL',
-        logging.INFO)
+        logging.DEBUG)
 
     APP_DIR = os.path.dirname(__file__)
     MIGRATION_DIRECTORY = os.path.join(APP_DIR, "migrations")

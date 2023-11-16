@@ -42,10 +42,10 @@ class DebugRouter(Router):
             log.debug(f'volumes: {volumes}')
             if volumes:
                 final_response['volumes'] = volumes
-            # firmware_update = self.qnap_client.get_firmware_update()
-            # log.debug(f'firmware_update: {firmware_update}')
-            # if firmware_update:
-            #     final_response['firmware_update'] = firmware_update
+            firmware_update = self.qnap_client.get_firmware_update()
+            log.debug(f'firmware_update: {firmware_update}')
+            if firmware_update:
+                final_response['firmware_update'] = firmware_update
             smart_disk_health = self.qnap_client.get_smart_disk_health()
             log.debug(f'smart_disk_health: {smart_disk_health}')
             if smart_disk_health:

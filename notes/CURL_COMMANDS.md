@@ -14,6 +14,9 @@ curl -i "http://localhost:2003/api/v1/qnap/debug" \
 curl -i "http://localhost:2003/api/v1/qnap/debug/pprint" \
 -H "Content-Type: application/json"
 
+curl -i "http://localhost:2003/api/v1/qnap/debug/firmware/update" \
+-H "Content-Type: application/json"
+
 curl -i "http://localhost:2003/api/v1/qnap/exporter/simple" \
 -H "Content-Type: application/json"
 

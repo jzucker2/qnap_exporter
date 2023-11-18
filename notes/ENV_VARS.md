@@ -16,4 +16,10 @@ QNAP_PASSWORD=alohomora
 
 # how long to wait between metrics checks
 METRICS_INTERVAL_SECONDS=30
+
+# by default, the qnap_exporter will ping the QNAP NAS at the METRICS_INTERVAL_SECONDS but to turn that off, set:
+SHOULD_SCHEDULE_QNAP_METRICS_UPDATES=0
+
+# to ensure it happens (on by default)
+SHOULD_SCHEDULE_QNAP_METRICS_UPDATES=1
 ```

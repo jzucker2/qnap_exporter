@@ -18,8 +18,13 @@ def create_app(config=config.base_config):
         app.logger.setLevel(log_level)
         app.logger.debug(f'!!!!!!!!!!! Set log_level: {log_level}')
 
-        # Include our Tasks
-        from .tasks import qnap  # noqa: F401
+        # Check to possibly include our Tasks
+        from .tasks.qnap_pinger import QNAPPinger
+        if QNAPPinger.should_schedule_qnap_metrics_updates():
+            from .tasks import qnap  # noqa: F401
+        else:
+            s_m = 'Skipping scheduling of QNAP metrics updates'
+            app.logger.warning(s_m)
 
         register_extensions(app)
 

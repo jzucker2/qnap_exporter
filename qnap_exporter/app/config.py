@@ -103,6 +103,12 @@ class base_config(object):
         "METRICS_INTERVAL_SECONDS",
         default=DEFAULT_METRICS_INTERVAL_SECONDS))
 
+    # to turn off, supply `0` but by default will regularly ping QNAP NAS
+    DEFAULT_SHOULD_SCHEDULE_QNAP_METRICS_UPDATES = '1'
+    SHOULD_SCHEDULE_QNAP_METRICS_UPDATES = os.environ.get(
+        'SHOULD_SCHEDULE_QNAP_METRICS_UPDATES',
+        DEFAULT_SHOULD_SCHEDULE_QNAP_METRICS_UPDATES)
+
 
 class dev_config(base_config):
     """Development configuration options."""

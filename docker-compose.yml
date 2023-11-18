@@ -20,5 +20,6 @@ services:
       - QNAP_USERNAME=${QNAP_NAS_USERNAME}
       # hopefully something secret!
       - QNAP_PASSWORD=${QNAP_NAS_PASSWORD}
+      - SHOULD_SCHEDULE_QNAP_METRICS_UPDATES=0
     stdin_open: true
     tty: true

@@ -129,3 +129,9 @@ qnap_exporter  |          'temp_c': 47,
 qnap_exporter  |          'temp_f': 116,
 qnap_exporter  |          'type': 'hdd'}}
 ```
+
+## Update Info
+
+```
+qnap_exporter  | [2023-12-03 19:10:27,355] INFO in qnap_client: debug_firmware_update got resp: {'@version': '1.0', 'authPassed': '1', 'model': {'modelName': 'TS-X53D', 'internalModelName': 'TS-X53B', 'platform': 'TS-NASX86', 'platform_ex': 'X86_GEMINILAKE', 'customModelName': None, 'displayModelName': 'TS-653D', 'sas_model': '0', 'storage_v2': '1', 'encryptfsSupported': '1', 'is_zfs': '0', 'node': None, 'dual_node': None}, 'firmware': {'name': 'QTS', 'version': '5.1.3', 'number': '2578', 'build': '20231110', 'patch': '0', 'buildTime': '2023/11/10'}, 'rfs_bits': '64', 'specVersion': '1.0', 'hostname': 'TestStorage', 'DemoSiteSuppurt': 'no', 'customLogo': {'customFrontLogo': None, 'customLoginLogo': None}, 'func': {'name': 'S_MENU_9', 'ownContent': {'fileMD5': 'null', 'Result': '0', 'uptimeSec': '1111690', 'rebootSuggest': '1', 'countryCode': {'code': '000000', 'abbr': 'GLB', 'name': 'Global'}, 'update_lock': '0', 'agree_beta': '0', 'desktop_check_fw': '1', 'agree_downgrade': '0', 'agree_code_signing_status': '0', 'liveUpdateStatus': 'done', 'official': {'new_feature_url': None, 'newVersion': 'none'}, 'recommended': {'new_feature_url': None, 'newVersion': 'none'}, 'updateCheckTime': '2023/12/01 06:00:09', 'dateformatindex': '1', 'timeformat': '24', 'updateFinishTime': '2023/11/19 11:01:08', 'doReboot': '0', 'update_remind_time': '0', 'mcu': {'mcu_version': '--', 'mcu_need_update': '0'}, 'code_signing_information': {'IgnoreCodeSigning': '0', 'issued_by': 'QNAP', 'issued_to': 'QNAP', 'valid_from': '2022/03/17 21:51:18', 'valid_to': '2025/03/16 21:51:18', 'owner': 'QNAP', 'issued_on': '2023/11/10 09:46:24', 'expired': '0'}}}, 'sleepSupport': '0'}
+```

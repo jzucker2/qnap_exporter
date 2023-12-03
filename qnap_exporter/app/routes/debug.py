@@ -15,3 +15,9 @@ def handle_debug_route():
 def handle_debug_pprint_route():
     router = DebugRouter()
     return router.handle_debug_pprint_route_response()
+
+
+@app.route('/api/v1/qnap/debug/firmware/update')
+def handle_debug_firmware_update_route():
+    router = DebugRouter()
+    return router.handle_debug_firmware_update_route_response()

@@ -79,3 +79,25 @@ class QNAPClient(object):
         except RequestException as re:
             r_m = f'request got re: {re}'
             raise QNAPClientRequestException(r_m)
+
+    def safe_get_debug_firmware_update(self):
+        try:
+            return self._get_debug_firmware_update()
+        except RequestException as re:
+            r_m = f'request got re: {re}'
+            raise QNAPClientRequestException(r_m)
+
+    def _get_debug_firmware_update(self):
+        """Get firmware update version if available."""
+        resp = self.client._get_url("sys/sysRequest.cgi?subfunc=firm_update")
+        if resp is None:
+            return None
+
+        d_m = f'debug_firmware_update got resp: {resp}'
+        log.info(d_m)
+
+        new_version = resp["func"]["ownContent"]["newVersion"]
+        if new_version is None or len(new_version) == 0:
+            return None
+
+        return new_version

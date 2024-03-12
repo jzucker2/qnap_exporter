@@ -1,6 +1,6 @@
 from flask import current_app as app
 from ..extensions import scheduler
-from ..routers.exporter_router import ExporterRouter
+from ..routers.collector_router import CollectorRouter
 from .qnap_pinger import QNAPPinger
 
 
@@ -23,7 +23,7 @@ def perform_qnap_metrics_update():
     log.debug("running qnap_metrics_update!")
 
     with scheduler.app.app_context():
-        router = ExporterRouter()
-        response = router.handle_exporter_metrics_update_route_response()
+        router = CollectorRouter()
+        response = router.handle_collector_metrics_update_route_response()
         r_m = f'scheduled qnap metrics update got response: {response}'
         log.debug(r_m)

@@ -94,19 +94,19 @@ class Metrics(object):
         'qnap_exporter_debug_route_exceptions',
         'Exceptions while attempting to handle debug route request')
 
-    SIMPLE_EXPORTER_ROUTE_TIME = Summary(
-        'qnap_exporter_simple_exporter_route_time',
+    SIMPLE_COLLECTOR_ROUTE_TIME = Summary(
+        'qnap_exporter_simple_collector_route_time',
         'Time spent to handle simple exporter route request')
 
-    SIMPLE_EXPORTER_ROUTE_EXCEPTIONS = Counter(
-        'qnap_exporter_simple_exporter_route_exceptions',
+    SIMPLE_COLLECTOR_ROUTE_EXCEPTIONS = Counter(
+        'qnap_exporter_simple_collector_route_exceptions',
         'Exceptions while attempting to handle simple exporter route request')
 
-    EXPORTER_METRICS_UPDATE_ROUTE_TIME = Summary(
+    COLLECTOR_METRICS_UPDATE_ROUTE_TIME = Summary(
         'qnap_exporter_exporter_metrics_update_route_time',
         'Time spent to handle exporter metrics update route request')
 
-    EXPORTER_METRICS_UPDATE_ROUTE_EXCEPTIONS = Counter(
+    COLLECTOR_METRICS_UPDATE_ROUTE_EXCEPTIONS = Counter(
         'qnap_exporter_exporter_metrics_update_route_exceptions',
         'Exceptions while attempting exporter metrics update route request')
 

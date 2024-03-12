@@ -8,11 +8,11 @@ from .qnap_client import QNAPClient
 log = app.logger
 
 
-class ExporterException(Exception):
+class CollectorException(Exception):
     pass
 
 
-class Exporter(object):
+class Collector(object):
     DEFAULT_SYSTEM_HEALTH_VALUE = 'missing'
 
     @classmethod

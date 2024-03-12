@@ -96,19 +96,19 @@ class Metrics(object):
 
     SIMPLE_COLLECTOR_ROUTE_TIME = Summary(
         'qnap_exporter_simple_collector_route_time',
-        'Time spent to handle simple exporter route request')
+        'Time spent to handle simple collector route request')
 
     SIMPLE_COLLECTOR_ROUTE_EXCEPTIONS = Counter(
         'qnap_exporter_simple_collector_route_exceptions',
-        'Exceptions while attempting to handle simple exporter route request')
+        'Exceptions while attempting to handle simple collector route request')
 
     COLLECTOR_METRICS_UPDATE_ROUTE_TIME = Summary(
         'qnap_exporter_exporter_metrics_update_route_time',
-        'Time spent to handle exporter metrics update route request')
+        'Time spent to handle collector metrics update route request')
 
     COLLECTOR_METRICS_UPDATE_ROUTE_EXCEPTIONS = Counter(
-        'qnap_exporter_exporter_metrics_update_route_exceptions',
-        'Exceptions while attempting exporter metrics update route request')
+        'qnap_exporter_collector_metrics_update_route_exceptions',
+        'Exceptions while attempting collector metrics update route request')
 
     SYSTEM_STATS_CPU_TEMP_C_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_c',

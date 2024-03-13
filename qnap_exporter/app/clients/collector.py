@@ -43,6 +43,7 @@ class Collector(object):
         return f'Exporter => domains: {self.domains}'
 
     def _set_up_domains(self):
+        # FIXME: this is repetitive
         self._domains = {
             Domains.SYSTEM_STATS:
                 DomainStats(

@@ -10,7 +10,7 @@
       # like `http://10.0.1.1`
       - QNAP_HOST_IP=${QNAP_HOST_IP}
       # this you can make up to be whatever you want, like `Living Room NAS`
-      - QNAP_HOST_NAME=${QNAP_HOST_NAME}
+      - QNAP_NAS_NAME=${QNAP_NAS_NAME}
       - QNAP_USERNAME=${QNAP_USERNAME}
       # hopefully something secret!
       - QNAP_PASSWORD=${QNAP_PASSWORD}

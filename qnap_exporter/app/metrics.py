@@ -31,7 +31,7 @@ class Labels(Enum):
         ])
 
     @classmethod
-    def default_labels(cls):
+    def nas_name_labels(cls):
         return list([
             cls.NAS_NAME.value,
         ])
@@ -103,19 +103,23 @@ class Metrics(object):
 
     SIMPLE_COLLECTOR_ROUTE_TIME = Summary(
         'qnap_exporter_simple_collector_route_time',
-        'Time spent to handle simple collector route request')
+        'Time spent to handle simple collector route request',
+        Labels.nas_name_labels())
 
     SIMPLE_COLLECTOR_ROUTE_EXCEPTIONS = Counter(
         'qnap_exporter_simple_collector_route_exceptions',
-        'Exceptions while attempting to handle simple collector route request')
+        'Exceptions while attempting to handle simple collector route request',
+        Labels.nas_name_labels())
 
     COLLECTOR_METRICS_UPDATE_ROUTE_TIME = Summary(
         'qnap_exporter_exporter_metrics_update_route_time',
-        'Time spent to handle collector metrics update route request')
+        'Time spent to handle collector metrics update route request',
+        Labels.nas_name_labels())
 
     COLLECTOR_METRICS_UPDATE_ROUTE_EXCEPTIONS = Counter(
         'qnap_exporter_collector_metrics_update_route_exceptions',
-        'Exceptions while attempting collector metrics update route request')
+        'Exceptions while attempting collector metrics update route request',
+        Labels.nas_name_labels())
 
     SYSTEM_STATS_CPU_TEMP_C_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_c',

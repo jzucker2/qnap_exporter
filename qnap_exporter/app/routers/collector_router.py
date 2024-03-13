@@ -99,26 +99,36 @@ class CollectorRouter(Router):
                 log.debug(f'self.collector: {self.collector}')
                 return final_response
 
-    def handle_collector_metrics_update_route_response(self):
+    def _handle_collector_metrics_update(self, collector):
+        nas_name = collector.nas_name
         with Metrics.COLLECTOR_METRICS_UPDATE_ROUTE_TIME.labels(
-            nas_name=self.nas_name,
+            nas_name=nas_name,
         ).time():
             with Metrics.COLLECTOR_METRICS_UPDATE_ROUTE_EXCEPTIONS.labels(
-                nas_name=self.nas_name,
+                nas_name=nas_name,
             ).count_exceptions():
                 p_m = 'handle collector metrics update route'
                 log.debug(p_m)
-                final_response = self.base_response('metrics_update')
-                for collector in self.collectors:
-                    c_f = (f'collector: {collector} first '
-                           f'fetch the domains stats')
-                    log.debug(c_f)
-                    collector.fetch_all_domains_stats()
-                    u_m = (f'collector: {collector} now that we '
-                           f'fetched the latest stats, update metrics')
-                    log.debug(u_m)
-                    collector.update_all_domains_metrics()
-                    d_m = (f'collector: {collector} now done '
-                           f'with both stats and metrics')
-                    log.debug(d_m)
-                    return final_response
+                collector_response = self.base_response('metrics_update')
+                c_f = (f'collector: {collector} first '
+                       f'fetch the domains stats')
+                log.debug(c_f)
+                collector.fetch_all_domains_stats()
+                u_m = (f'collector: {collector} now that we '
+                       f'fetched the latest stats, update metrics')
+                log.debug(u_m)
+                collector.update_all_domains_metrics()
+                d_m = (f'collector: {collector} now done '
+                       f'with both stats and metrics')
+                log.debug(d_m)
+                return collector_response
+
+    def handle_all_collectors_metrics_update_route_response(self):
+        p_m = 'handle collector metrics update route'
+        log.debug(p_m)
+        final_response = self.base_response('metrics_update')
+        for collector in self.collectors:
+            response = self._handle_collector_metrics_update(collector)
+            cr_m = f'collector: {collector} had response: {response}'
+            log.debug(cr_m)
+            return final_response

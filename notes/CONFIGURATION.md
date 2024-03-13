@@ -7,13 +7,14 @@
 ```
     ...
     environment:
-      # like `http://10.0.1.1`
-      - QNAP_HOST_IP=${QNAP_HOST_IP}
       # this you can make up to be whatever you want, like `Living Room NAS`
       - QNAP_NAS_NAME=${QNAP_NAS_NAME}
-      - QNAP_USERNAME=${QNAP_USERNAME}
+      # like `10.0.1.1` or `qnap`
+      - QNAP_HOST_IP=${QNAP_NAS_IP}
+      # like `admin` or `jordan`
+      - QNAP_USERNAME=${QNAP_NAS_USERNAME}
       # hopefully something secret!
-      - QNAP_PASSWORD=${QNAP_PASSWORD}
+      - QNAP_PASSWORD=${QNAP_NAS_PASSWORD}
 ```
 
 ### Multiple Routers with yaml config file

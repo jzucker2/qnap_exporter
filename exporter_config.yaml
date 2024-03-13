@@ -1,12 +1,12 @@
 nas_instances:
-  - nas_name: Living Room NAS
-    nas_host: 10.0.1.1
+  - nas_name: solaris NAS
+    nas_host: 10.0.1.62
     nas_port: 8080
-    nas_username: admin
-    nas_password: foo
+    nas_username: gurooj
+    nas_password: cxf1tbn0jhp4yma_GUJ
 
-  - nas_name: Bedroom Room NAS
-    nas_host: 10.0.1.2
+  - nas_name: foo NAS
+    nas_host: 10.0.1.222
     nas_port: 8080
     nas_username: admin
     nas_password: bar

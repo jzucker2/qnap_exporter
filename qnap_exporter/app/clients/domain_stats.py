@@ -98,8 +98,9 @@ class DomainStats(object):
         # TODO: perfect spot to create empty stats and update,
         #  that way we can 0 out if we can't connect
         try:
-            d_m = f'updating stats for self.domain: {self.domain}'
-            log.debug(d_m)
+            d_m = (f'self.nas_name: {self.nas_name} updating '
+                   f'stats for self.domain: {self.domain}')
+            log.info(d_m)
             updated_stats = self._domain_func()
             s_m = f'self.domain: {self.domain} updated_stats: {updated_stats}'
             log.debug(s_m)

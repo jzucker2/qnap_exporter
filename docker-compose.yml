@@ -21,14 +21,14 @@ services:
       - "1805:1805"
     volumes:
       - ./exporter_config.yaml:/etc/qnap_exporter/exporter_config.yaml
-    environment:
-      # this you can make up to be whatever you want, like `Living Room NAS`
-      - QNAP_NAS_NAME=${QNAP_NAS_NAME}
-      # like `10.0.1.1` or `qnap`
-      - QNAP_NAS_HOST=${QNAP_NAS_HOST}
-      # like `admin` or `jordan`
-      - QNAP_NAS_USERNAME=${QNAP_NAS_USERNAME}
-      # hopefully something secret!
-      - QNAP_NAS_PASSWORD=${QNAP_NAS_PASSWORD}
+#    environment:
+#      # this you can make up to be whatever you want, like `Living Room NAS`
+#      - QNAP_NAS_NAME=${QNAP_NAS_NAME}
+#      # like `10.0.1.1` or `qnap`
+#      - QNAP_NAS_HOST=${QNAP_NAS_HOST}
+#      # like `admin` or `jordan`
+#      - QNAP_NAS_USERNAME=${QNAP_NAS_USERNAME}
+#      # hopefully something secret!
+#      - QNAP_NAS_PASSWORD=${QNAP_NAS_PASSWORD}
     stdin_open: true
     tty: true

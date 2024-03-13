@@ -44,7 +44,8 @@ class Collector(object):
         return self.qnap_client.nas_name
 
     def __repr__(self):
-        return f'Collector => domains: {self.domains}'
+        m = f'Collector => nas_name: {self.nas_name} domains: {self.domains}'
+        return m
 
     def _set_up_domains(self):
         # FIXME: this is repetitive

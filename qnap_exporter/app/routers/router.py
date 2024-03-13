@@ -1,5 +1,4 @@
 from flask import request, current_app as app
-from ..database import get_db
 from ..utils import normalize_name
 
 
@@ -16,11 +15,6 @@ class RouterException(Exception):
 
 
 class Router(object):
-    def __init__(self, database=None):
-        if not database:
-            database = get_db()
-        self.db = database
-
     @property
     def service(self):
         return DEFAULT_SERVICE

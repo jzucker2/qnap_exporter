@@ -1,8 +1,7 @@
 # based around https://github.com/jzucker2/filmstock
 from flask import Flask
 from . import config
-from . import database
-from .extensions import migrate, cors, scheduler
+from .extensions import cors, scheduler
 from .metrics import metrics
 
 
@@ -47,37 +46,14 @@ def create_app(config=config.base_config):
 def register_extensions(app):
     """Register extensions with the Flask application."""
     cors(app)
-    db_uri = app.config.get('SQLALCHEMY_DATABASE_URI')
-    app.logger.info(f'registering with '
-                    f'SQLALCHEMY_DATABASE_URI: {db_uri}')
-
-    db = database.init_app(app)
-    # need to import below for alembic migrations
-    from .models.admin import Admin  # noqa: F401
-    migration_directory = app.config.get('MIGRATION_DIRECTORY')
-    migration_message = f'Using migration_directory: ' \
-                        f'{migration_directory}'
-    app.logger.debug(migration_message)
-    migrate.init_app(app, db=db, directory=migration_directory)
     # scheduler
     scheduler.init_app(app)
     scheduler.start()
-    # TODO: do we need the below??
-    # db.create_all()
+    app.logger.debug('done registering extensions')
 
 
 def register_metrics(app):
     metrics.init_app(app)
-
-
-def ensure_admin(application):
-    with application.app_context():
-        application.logger.info('Ensure default Admin exists')
-        from .models.admin import Admin
-        db = database.get_db()
-        current_admin = Admin.ensure_admin(database=db)
-        message = f'starting up with current_admin: {current_admin}'
-        application.logger.info(message)
 
 
 # def register_errorhandlers(app):

@@ -12,10 +12,7 @@ log = app.logger
 @app.route('/utils/hey')
 def hey():
     log.debug('hey route')
-    return {
-        'message': 'in a bottle',
-        'version': get_version(),
-    }
+    return {'message': 'in a bottle'}
 
 
 @app.route('/health')
@@ -23,7 +20,10 @@ def hey():
 @app.route('/utils/health')
 def health():
     log.debug('health check')
-    return {'message': 'healthy'}
+    return {
+        'message': 'healthy',
+        'version': get_version(),
+    }
 
 
 @app.route('/utils/version')

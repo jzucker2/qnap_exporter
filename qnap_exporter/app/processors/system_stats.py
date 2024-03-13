@@ -75,41 +75,61 @@ class SystemStatsProcessor(BaseProcessor):
         log.debug(f'system: {system}')
         temp_c = system.get(SystemDictKeys.TEMP_C)
         temp_f = system.get(SystemDictKeys.TEMP_F)
-        Metrics.SYSTEM_STATS_SYSTEM_TEMP_C_VALUE.set(temp_c)
-        Metrics.SYSTEM_STATS_SYSTEM_TEMP_F_VALUE.set(temp_f)
+        Metrics.SYSTEM_STATS_SYSTEM_TEMP_C_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(temp_c)
+        Metrics.SYSTEM_STATS_SYSTEM_TEMP_F_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(temp_f)
 
     def _handle_uptime_dict(self, stats):
         uptime = stats.get(SystemStatsKeys.UPTIME)
         log.debug(f'uptime: {uptime}')
         uptime_seconds = self._convert_uptime_dict(uptime)
-        Metrics.SYSTEM_STATS_UPTIME_SECONDS.set(uptime_seconds)
+        Metrics.SYSTEM_STATS_UPTIME_SECONDS.labels(
+            nas_name=self.nas_name,
+        ).set(uptime_seconds)
 
     def _handle_memory_dict(self, stats):
         memory = stats.get(SystemStatsKeys.MEMORY)
         if not memory:
             return
         free = memory.get(MemoryDictKeys.FREE, 0)
-        Metrics.SYSTEM_STATS_MEMORY_FREE_VALUE.set(free)
+        Metrics.SYSTEM_STATS_MEMORY_FREE_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(free)
         total = memory.get(MemoryDictKeys.TOTAL, 0)
-        Metrics.SYSTEM_STATS_MEMORY_TOTAL_VALUE.set(total)
+        Metrics.SYSTEM_STATS_MEMORY_TOTAL_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(total)
         log.debug(f'memory stats => {free}/{total}')
         used = total - free
-        Metrics.SYSTEM_STATS_MEMORY_USED_VALUE.set(used)
+        Metrics.SYSTEM_STATS_MEMORY_USED_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(used)
         usage = (used / total) * 100
         u_m = f'_handle_memory_dict got usage: {usage} from ({used}/{total})'
         log.debug(u_m)
-        Metrics.SYSTEM_STATS_MEMORY_USAGE_PERCENT.set(usage)
+        Metrics.SYSTEM_STATS_MEMORY_USAGE_PERCENT.labels(
+            nas_name=self.nas_name,
+        ).set(usage)
 
     def _handle_cpu_dict(self, stats):
         cpu = stats.get(SystemStatsKeys.CPU)
         if not cpu:
             return
         temp_c = cpu.get(CPUDictKeys.TEMP_C, 0)
-        Metrics.SYSTEM_STATS_CPU_TEMP_C_VALUE.set(temp_c)
+        Metrics.SYSTEM_STATS_CPU_TEMP_C_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(temp_c)
         temp_f = cpu.get(CPUDictKeys.TEMP_F, 0)
-        Metrics.SYSTEM_STATS_CPU_TEMP_F_VALUE.set(temp_f)
+        Metrics.SYSTEM_STATS_CPU_TEMP_F_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(temp_f)
         usage_percent = cpu.get(CPUDictKeys.USAGE_PERCENT, 0)
-        Metrics.SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE.set(usage_percent)
+        Metrics.SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE.labels(
+            nas_name=self.nas_name,
+        ).set(usage_percent)
         log.debug(f'cpu stats => {temp_c}, {temp_f}, {usage_percent}')
 
     def _handle_nics_interface(self, network_id, network_stats):
@@ -122,24 +142,28 @@ class SystemStatsProcessor(BaseProcessor):
         tx_packets = network_stats.get(NICSInterfaceDictKeys.TX_PACKETS)
         # TODO: add something to check `link_status` and output a 1 or 0
         Metrics.SYSTEM_STATS_NICS_MAX_SPEED.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             ip=ip,
             mac=mac,
             usage=usage,
         ).set(max_speed)
         Metrics.SYSTEM_STATS_NICS_ERR_PACKETS.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             ip=ip,
             mac=mac,
             usage=usage,
         ).set(err_packets)
         Metrics.SYSTEM_STATS_NICS_RX_PACKETS.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             ip=ip,
             mac=mac,
             usage=usage,
         ).set(rx_packets)
         Metrics.SYSTEM_STATS_NICS_TX_PACKETS.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             ip=ip,
             mac=mac,

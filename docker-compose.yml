@@ -29,6 +29,6 @@ services:
       # like `admin` or `jordan`
       - QNAP_NAS_USERNAME=${QNAP_NAS_USERNAME}
       # hopefully something secret!
-      - QNAP_NAS_USERNAME=${QNAP_NAS_PASSWORD}
+      - QNAP_NAS_PASSWORD=${QNAP_NAS_PASSWORD}
     stdin_open: true
     tty: true

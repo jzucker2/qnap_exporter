@@ -52,13 +52,13 @@ class CollectorRouter(Router):
     @classmethod
     def _create_collector_from_config(cls, nas_config):
         nas_name = nas_config[ConfigKeys.NAS_NAME.key_name]
-        nas_ip = nas_config[ConfigKeys.NAS_IP.key_name]
-        nas_port = nas_config[ConfigKeys.NAS_PORT]
-        nas_username = nas_config[ConfigKeys.NAS_USERNAME]
+        nas_host = nas_config[ConfigKeys.NAS_HOST.key_name]
+        nas_port = nas_config[ConfigKeys.NAS_PORT.key_name]
+        nas_username = nas_config[ConfigKeys.NAS_USERNAME.key_name]
         nas_password = nas_config[ConfigKeys.NAS_PASSWORD.key_name]
         qnap_client = QNAPClient.get_collecting_client(
             nas_name,
-            nas_ip,
+            nas_host,
             nas_port,
             nas_username,
             nas_password)

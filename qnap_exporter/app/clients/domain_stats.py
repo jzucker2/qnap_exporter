@@ -33,10 +33,6 @@ class DomainStats(object):
         self._last_updated = None
         self._created = self.get_now()
 
-    @property
-    def domain_func(self):
-        return
-
     def __repr__(self):
         return (f'DomainStats ==> domain: {self.domain} '
                 f'| created: {self.created} | '

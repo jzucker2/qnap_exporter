@@ -43,7 +43,7 @@ class BandwidthProcessor(BaseProcessor):
     def process(self, stats, last_updated=None):
         m = (f'_process_bandwidth => '
              f'stats: {stats} ({last_updated})')
-        log.info(m)
+        log.debug(m)
         if not stats:
             return
         for key, value in stats.items():

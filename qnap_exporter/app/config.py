@@ -95,7 +95,7 @@ class base_config(object):
                                   default=DEFAULT_QNAP_NAS_USERNAME)
 
     DEFAULT_QNAP_NAS_PASSWORD = "password"
-    QNAP_NAS_PASSWORD = os.getenv("QNAP_PASSWORD",
+    QNAP_NAS_PASSWORD = os.getenv("QNAP_NAS_PASSWORD",
                                   default=DEFAULT_QNAP_NAS_PASSWORD)
 
     # Flask-APScheduler

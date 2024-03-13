@@ -79,6 +79,7 @@ class CollectorRouter(Router):
             log.info('Using env vars for router configs')
             collector = cls._create_env_var_collector()
             collectors.append(collector)
+        log.debug(f'collectors: {collectors}')
         return list(collectors)
 
     @property
@@ -101,6 +102,7 @@ class CollectorRouter(Router):
 
     def _handle_collector_metrics_update(self, collector):
         nas_name = collector.nas_name
+        log.debug(f'collector: {collector} nas_name: {nas_name}')
         with Metrics.COLLECTOR_METRICS_UPDATE_ROUTE_TIME.labels(
             nas_name=nas_name,
         ).time():

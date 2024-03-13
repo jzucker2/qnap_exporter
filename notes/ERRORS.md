@@ -7,6 +7,14 @@
 - [ ] invalid JSON
 - [ ] reset metrics to 0 when failing to get data (so graphs can dip appropriately)
 
+## Nonetype
+
+```
+("'NoneType' object is not subscriptable",)
+```
+
+I think this comes from the volume code in the QNAP client library
+
 ## Debug Data
 
 ```

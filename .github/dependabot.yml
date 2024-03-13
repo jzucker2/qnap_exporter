@@ -43,3 +43,4 @@ updates:
       - dependency-name: "qnapstats"
       - dependency-name: "Flask-APScheduler"
       - dependency-name: "tenacity"
+      - dependency-name: "PyYAML"

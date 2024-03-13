@@ -24,29 +24,35 @@ class VolumesProcessorException(BaseProcessorException):
 
 
 class VolumesProcessor(BaseProcessor):
-    @classmethod
-    def _handle_folder(cls, id, id_number, label, folder_stats):
+    def _handle_folder(self, id, id_number, label, folder_stats):
+        h_m = f'_handle_folder for id: {id} with id_number: {id_number}'
+        log.debug(h_m)
         if not folder_stats:
             return
         sharename = folder_stats.get(FolderDictKeys.SHARENAME)
         used_size = folder_stats.get(FolderDictKeys.USED_SIZE)
         Metrics.VOLUME_FOLDER_USED_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=id,
             volume_id_number=id_number,
             volume_label=label,
             sharename=sharename,
         ).set(used_size)
 
-    @classmethod
-    def _iterate_volume_folders(cls, id, id_number, label, volume_stats):
+    def _iterate_volume_folders(self, id, id_number, label, volume_stats):
+        i_m = (f'_iterate_volume_folder for '
+               f'id: {id} with id_number: {id_number}')
+        log.debug(i_m)
         folders = volume_stats.get(VolumeDictKeys.FOLDERS)
         if not folders:
             return
         for folder_stats in folders:
-            cls._handle_folder(id, id_number, label, folder_stats)
+            self._handle_folder(id, id_number, label, folder_stats)
 
-    @classmethod
-    def _handle_volume(cls, volume_id, volume_stats):
+    def _handle_volume(self, volume_id, volume_stats):
+        h_m = (f'_handle_volume for '
+               f'volume_id: {id} with volume_stats: {volume_stats}')
+        log.debug(h_m)
         if not volume_stats:
             return
         id_number = volume_stats.get(VolumeDictKeys.ID_NUMBER)
@@ -54,17 +60,20 @@ class VolumesProcessor(BaseProcessor):
         free_size = volume_stats.get(VolumeDictKeys.FREE_SIZE)
         total_size = volume_stats.get(VolumeDictKeys.TOTAL_SIZE)
         Metrics.VOLUME_FREE_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
         ).set(free_size)
         Metrics.VOLUME_TOTAL_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
         ).set(total_size)
         used_size = total_size - free_size
         Metrics.VOLUME_USED_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
@@ -74,19 +83,19 @@ class VolumesProcessor(BaseProcessor):
                f'usage: {usage} from ({used_size}/{total_size})')
         log.debug(u_m)
         Metrics.VOLUME_USAGE_PERCENT.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
         ).set(usage)
         # TODO: pass in size values so we can calculate the folder percentages
-        cls._iterate_volume_folders(volume_id, id_number, label, volume_stats)
+        self._iterate_volume_folders(volume_id, id_number, label, volume_stats)
 
-    @classmethod
-    def process(cls, stats, last_updated=None):
+    def process(self, stats, last_updated=None):
         m = (f'_process_volumes => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
         if not stats:
             return
         for key, value in stats.items():
-            cls._handle_volume(key, value)
+            self._handle_volume(key, value)

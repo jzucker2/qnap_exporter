@@ -18,8 +18,7 @@ class BandwidthProcessorException(BaseProcessorException):
 
 
 class BandwidthProcessor(BaseProcessor):
-    @classmethod
-    def _handle_network_interface(cls, network_id, network_stats):
+    def _handle_network_interface(self, network_id, network_stats):
         h_m = (f'_handle_network interface for '
                f'network_id: {network_id} with '
                f'network_stats: {network_stats}')
@@ -29,22 +28,23 @@ class BandwidthProcessor(BaseProcessor):
         tx = network_stats.get(NetworkInterfaceDictKeys.TX, 0)
         is_default = network_stats.get(NetworkInterfaceDictKeys.IS_DEFAULT)
         Metrics.BANDWIDTH_INTERFACE_RX.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             network_name=name,
             is_default=is_default,
         ).set(rx)
         Metrics.BANDWIDTH_INTERFACE_TX.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             network_name=name,
             is_default=is_default,
         ).set(tx)
 
-    @classmethod
-    def process(cls, stats, last_updated=None):
+    def process(self, stats, last_updated=None):
         m = (f'_process_bandwidth => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
         if not stats:
             return
         for key, value in stats.items():
-            cls._handle_network_interface(key, value)
+            self._handle_network_interface(key, value)

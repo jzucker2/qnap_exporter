@@ -4,6 +4,7 @@ from prometheus_flask_exporter import Counter, Summary, Gauge
 
 
 class Labels(Enum):
+    NAS_NAME = 'nas_name'
     DEVICE = 'device'
     NETWORK_ID = 'network_id'
     NETWORK_NAME = 'network_name'
@@ -30,8 +31,15 @@ class Labels(Enum):
         ])
 
     @classmethod
+    def nas_name_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+        ])
+
+    @classmethod
     def bandwidth_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.NETWORK_ID.value,
             cls.NETWORK_NAME.value,
             cls.IS_DEFAULT.value,
@@ -40,6 +48,7 @@ class Labels(Enum):
     @classmethod
     def nics_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.NETWORK_ID.value,
             cls.IP.value,
             cls.MAC.value,
@@ -49,6 +58,7 @@ class Labels(Enum):
     @classmethod
     def volume_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.VOLUME_ID.value,
             cls.VOLUME_ID_NUMBER.value,
             cls.VOLUME_LABEL.value,
@@ -57,6 +67,7 @@ class Labels(Enum):
     @classmethod
     def volume_folder_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.VOLUME_ID.value,
             cls.VOLUME_ID_NUMBER.value,
             cls.VOLUME_LABEL.value,
@@ -66,6 +77,7 @@ class Labels(Enum):
     @classmethod
     def smart_disk_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.DISK_ID.value,
             cls.DRIVE_NUMBER.value,
             cls.MODEL.value,
@@ -76,6 +88,7 @@ class Labels(Enum):
     @classmethod
     def smart_disk_capacity_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.DISK_ID.value,
             cls.DRIVE_NUMBER.value,
             cls.MODEL.value,
@@ -84,8 +97,13 @@ class Labels(Enum):
             cls.UNITS.value,
         ])
 
+    @classmethod
+    def default_system_stats_labels(cls):
+        return list(cls.nas_name_labels())
+
 
 class Metrics(object):
+    # This is just for simple debug stuff
     DEBUG_ROUTE_TIME = Summary(
         'qnap_exporter_debug_route_time',
         'Time spent to handle debug route request')
@@ -94,61 +112,79 @@ class Metrics(object):
         'qnap_exporter_debug_route_exceptions',
         'Exceptions while attempting to handle debug route request')
 
-    SIMPLE_EXPORTER_ROUTE_TIME = Summary(
-        'qnap_exporter_simple_exporter_route_time',
-        'Time spent to handle simple exporter route request')
+    # For collector process that scrapes info from QNAP devices
 
-    SIMPLE_EXPORTER_ROUTE_EXCEPTIONS = Counter(
-        'qnap_exporter_simple_exporter_route_exceptions',
-        'Exceptions while attempting to handle simple exporter route request')
+    SIMPLE_COLLECTOR_ROUTE_TIME = Summary(
+        'qnap_exporter_simple_collector_route_time',
+        'Time spent to handle simple collector route request',
+        Labels.nas_name_labels())
 
-    EXPORTER_METRICS_UPDATE_ROUTE_TIME = Summary(
-        'qnap_exporter_exporter_metrics_update_route_time',
-        'Time spent to handle exporter metrics update route request')
+    SIMPLE_COLLECTOR_ROUTE_EXCEPTIONS = Counter(
+        'qnap_exporter_simple_collector_route_exceptions',
+        'Exceptions while attempting to handle simple collector route request',
+        Labels.nas_name_labels())
 
-    EXPORTER_METRICS_UPDATE_ROUTE_EXCEPTIONS = Counter(
-        'qnap_exporter_exporter_metrics_update_route_exceptions',
-        'Exceptions while attempting exporter metrics update route request')
+    COLLECTOR_METRICS_UPDATE_ROUTE_TIME = Summary(
+        'qnap_exporter_collector_metrics_update_route_time',
+        'Time spent to handle collector metrics update route request',
+        Labels.nas_name_labels())
+
+    COLLECTOR_METRICS_UPDATE_ROUTE_EXCEPTIONS = Counter(
+        'qnap_exporter_collector_metrics_update_route_exceptions',
+        'Exceptions while attempting collector metrics update route request',
+        Labels.nas_name_labels())
+
+    # Below are for actual QNAP NAS instances
 
     SYSTEM_STATS_CPU_TEMP_C_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_c',
-        'Current temp of CPU in Celsius')
+        'Current temp of CPU in Celsius',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_CPU_TEMP_F_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_f',
-        'Current temp of CPU in Fahrenheit')
+        'Current temp of CPU in Fahrenheit',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_SYSTEM_TEMP_C_VALUE = Gauge(
         'qnap_exporter_system_stats_system_temp_c',
-        'Current temp of entire QNAP system in Celsius')
+        'Current temp of entire QNAP system in Celsius',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_SYSTEM_TEMP_F_VALUE = Gauge(
         'qnap_exporter_system_stats_system_temp_f',
-        'Current temp of entire QNAP system in Fahrenheit')
+        'Current temp of entire QNAP system in Fahrenheit',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_CPU_USAGE_PERCENT_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_usage_percent',
-        'Current system CPU usage percentage')
+        'Current system CPU usage percentage',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_MEMORY_FREE_VALUE = Gauge(
         'qnap_exporter_system_stats_memory_free',
-        'Current free system memory of the QNAP')
+        'Current free system memory of the QNAP',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_MEMORY_TOTAL_VALUE = Gauge(
         'qnap_exporter_system_stats_memory_total',
-        'The total system memory of the QNAP')
+        'The total system memory of the QNAP',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_MEMORY_USED_VALUE = Gauge(
         'qnap_exporter_system_stats_memory_used',
-        'The used system memory of the QNAP')
+        'The used system memory of the QNAP',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_MEMORY_USAGE_PERCENT = Gauge(
         'qnap_exporter_system_stats_memory_usage_percent',
-        'The % of system memory currently being used of the QNAP')
+        'The % of system memory currently being used of the QNAP',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_UPTIME_SECONDS = Gauge(
         'qnap_exporter_system_stats_uptime_seconds',
-        'The total system uptime of the QNAP in seconds')
+        'The total system uptime of the QNAP in seconds',
+        Labels.default_system_stats_labels())
 
     SYSTEM_STATS_NICS_RX_PACKETS = Gauge(
         'qnap_exporter_system_stats_nics_rx_packets',

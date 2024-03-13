@@ -78,6 +78,10 @@ class base_config(object):
     APP_DIR = os.path.dirname(__file__)
     MIGRATION_DIRECTORY = os.path.join(APP_DIR, "migrations")
 
+    DEFAULT_QNAP_NAS_NAME = "default"
+    QNAP_NAS_NAME = os.getenv("QNAP_NAS_NAME",
+                              default=DEFAULT_QNAP_NAS_NAME)
+
     DEFAULT_QNAP_HOST_IP = "10.0.1.1"
     QNAP_HOST_IP = os.getenv("QNAP_HOST_IP",
                              default=DEFAULT_QNAP_HOST_IP)

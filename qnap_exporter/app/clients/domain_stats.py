@@ -25,11 +25,11 @@ class DomainStats(object):
     def get_now(cls):
         return global_get_now()
 
-    def __init__(self, domain, domain_func):
+    def __init__(self, qnap_client, domain):
         super().__init__()
+        self._qnap_client = qnap_client
         self._stats = None
         self._domain = domain
-        self._domain_func = domain_func
         self._last_updated = None
         self._created = self.get_now()
 
@@ -37,6 +37,14 @@ class DomainStats(object):
         return (f'DomainStats ==> domain: {self.domain} '
                 f'| created: {self.created} | '
                 f'last_updated: {self.last_updated} |')
+
+    @property
+    def qnap_client(self):
+        return self._qnap_client
+
+    @property
+    def nas_name(self):
+        return self.qnap_client.nas_name
 
     @property
     def created(self):
@@ -68,14 +76,33 @@ class DomainStats(object):
         self.set_last_updated(last_updated=last_updated)
 
     @property
-    def domain_func(self):
-        return self._domain_func
+    def _domain_func(self):
+        d_m = f'fetching domain func for self.domain: {self.domain}'
+        log.debug(d_m)
+        if self.domain == Domains.SYSTEM_STATS:
+            return self.qnap_client.get_system_stats
+        elif self.domain == Domains.VOLUMES:
+            return self.qnap_client.get_volumes
+        elif self.domain == Domains.SYSTEM_HEALTH:
+            return self.qnap_client.get_system_health
+        elif self.domain == Domains.SMART_DISK_HEALTH:
+            return self.qnap_client.get_smart_disk_health
+        elif self.domain == Domains.BANDWIDTH:
+            return self.qnap_client.get_bandwidth
+        else:
+            e_m = f'_domain_func failed for self.domain: {self.domain}'
+            log.error(e_m)
+            raise InvalidMetricsDomainStatsException(e_m)
 
     def update_stats(self, last_updated=None):
         # TODO: perfect spot to create empty stats and update,
         #  that way we can 0 out if we can't connect
         try:
+            d_m = f'updating stats for self.domain: {self.domain}'
+            log.debug(d_m)
             updated_stats = self._domain_func()
+            s_m = f'self.domain: {self.domain} updated_stats: {updated_stats}'
+            log.debug(s_m)
             self.set_stats(updated_stats, last_updated=last_updated)
         except QNAPClientException as qe:
             q_m = f'update_stats domain: {self.domain_name} => qe: {qe}'
@@ -86,58 +113,27 @@ class DomainStats(object):
         else:
             self.set_stats(updated_stats, last_updated=last_updated)
 
-    def update_metrics(self):
+    def _get_domain_processor(self):
         if self.domain == Domains.SYSTEM_STATS:
-            self._process_system_stats()
+            return SystemStatsProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.VOLUMES:
-            self._process_volumes()
+            return VolumesProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.SYSTEM_HEALTH:
-            self._process_system_health()
+            return SystemHealthProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.SMART_DISK_HEALTH:
-            self._process_smart_disk_health()
+            return SmartDiskHealthProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.BANDWIDTH:
-            self._process_bandwidth()
+            return BandwidthProcessor.get_processor(self.nas_name)
         else:
-            e_m = f'update_metrics failed for self.domain: {self.domain}'
+            e_m = f'_domain_processor failed for self.domain: {self.domain}'
             log.error(e_m)
             raise InvalidMetricsDomainStatsException(e_m)
 
-    def _process_system_stats(self):
+    def update_metrics(self):
         stats = self.stats
         last_updated = self.last_updated
-        m = (f'_process_system_stats => '
+        m = (f'update_metrics => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
-        SystemStatsProcessor.process(stats, last_updated=last_updated)
-
-    def _process_system_health(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_system_health => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        SystemHealthProcessor.process(stats, last_updated=last_updated)
-
-    def _process_volumes(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_volumes => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        VolumesProcessor.process(stats, last_updated=last_updated)
-
-    def _process_smart_disk_health(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_smart_disk_health => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        SmartDiskHealthProcessor.process(stats, last_updated=last_updated)
-
-    def _process_bandwidth(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_bandwidth => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        BandwidthProcessor.process(stats, last_updated=last_updated)
+        processor = self._get_domain_processor()
+        processor.process(stats, last_updated=last_updated)

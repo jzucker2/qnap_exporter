@@ -14,7 +14,7 @@ class DebugRouterException(RouterException):
 class DebugRouter(Router):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.qnap_client = QNAPClient.get_client()
+        self.qnap_client = QNAPClient.get_default_client()
 
     @property
     def service(self):

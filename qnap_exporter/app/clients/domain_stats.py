@@ -90,7 +90,7 @@ class DomainStats(object):
         elif self.domain == Domains.SMART_DISK_HEALTH:
             return self.qnap_client.get_smart_disk_health
         elif self.domain == Domains.BANDWIDTH:
-            return self.qnap_client.self.qnap_client.get_bandwidth
+            return self.qnap_client.get_bandwidth
         else:
             e_m = f'_domain_func failed for self.domain: {self.domain}'
             log.error(e_m)

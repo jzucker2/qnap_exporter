@@ -31,6 +31,10 @@ class QNAPClient(object):
         password = QNAP_PASSWORD
         return cls(host, port, username, password, nas_name=nas_name)
 
+    @classmethod
+    def get_collecting_client(cls, nas_name, host, port, username, password):
+        return cls(host, port, username, password, nas_name=nas_name)
+
     def __init__(self,
                  host,
                  port,

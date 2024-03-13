@@ -16,9 +16,13 @@ class Collector(object):
     DEFAULT_SYSTEM_HEALTH_VALUE = 'missing'
 
     @classmethod
-    def get_default_client(cls, qnap_client=None):
+    def get_default_collector(cls, qnap_client=None):
         if not qnap_client:
             qnap_client = QNAPClient.get_default_client()
+        return cls(qnap_client)
+
+    @classmethod
+    def get_collector(cls, qnap_client):
         return cls(qnap_client)
 
     def __init__(self, qnap_client):

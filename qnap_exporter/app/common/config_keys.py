@@ -5,6 +5,7 @@ class ConfigKeys(Enum):
     NAS_INSTANCES = 'nas_instances'
     NAS_NAME = 'nas_name'
     NAS_IP = 'nas_ip'
+    NAS_PORT = 'nas_port'
     NAS_USERNAME = 'nas_username'
     NAS_PASSWORD = 'nas_password'
 

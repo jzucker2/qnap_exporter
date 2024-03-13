@@ -1,10 +1,12 @@
 nas_instances:
   - nas_name: Living Room NAS
     nas_ip: http://10.0.1.1
+    nas_port: 8080
     nas_username: admin
     nas_password: foo
 
   - nas_name: Bedroom Room NAS
     nas_ip: http://10.0.1.2
+    nas_port: 8080
     nas_username: admin
     nas_password: bar

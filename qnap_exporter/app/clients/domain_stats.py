@@ -77,6 +77,8 @@ class DomainStats(object):
 
     @property
     def _domain_func(self):
+        d_m = f'fetching domain func for self.domain: {self.domain}'
+        log.debug(d_m)
         if self.domain == Domains.SYSTEM_STATS:
             return self.qnap_client.get_system_stats
         elif self.domain == Domains.VOLUMES:
@@ -96,7 +98,11 @@ class DomainStats(object):
         # TODO: perfect spot to create empty stats and update,
         #  that way we can 0 out if we can't connect
         try:
+            d_m = f'updating stats for self.domain: {self.domain}'
+            log.debug(d_m)
             updated_stats = self._domain_func()
+            s_m = f'self.domain: {self.domain} updated_stats: {updated_stats}'
+            log.debug(s_m)
             self.set_stats(updated_stats, last_updated=last_updated)
         except QNAPClientException as qe:
             q_m = f'update_stats domain: {self.domain_name} => qe: {qe}'

@@ -61,6 +61,7 @@ class QNAPClient(object):
             raise QNAPClientRequestException(r_m)
 
     def get_volumes(self):
+        log.debug(f'self.nas_name: {self.nas_name} get_volumes')
         try:
             return self.client.get_volumes()
         except RequestException as re:

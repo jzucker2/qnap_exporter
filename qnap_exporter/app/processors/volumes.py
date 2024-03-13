@@ -25,6 +25,8 @@ class VolumesProcessorException(BaseProcessorException):
 
 class VolumesProcessor(BaseProcessor):
     def _handle_folder(self, id, id_number, label, folder_stats):
+        h_m = f'_handle_folder for id: {id} with id_number: {id_number}'
+        log.debug(h_m)
         if not folder_stats:
             return
         sharename = folder_stats.get(FolderDictKeys.SHARENAME)
@@ -38,6 +40,9 @@ class VolumesProcessor(BaseProcessor):
         ).set(used_size)
 
     def _iterate_volume_folders(self, id, id_number, label, volume_stats):
+        i_m = (f'_iterate_volume_folder for '
+               f'id: {id} with id_number: {id_number}')
+        log.debug(i_m)
         folders = volume_stats.get(VolumeDictKeys.FOLDERS)
         if not folders:
             return
@@ -45,6 +50,9 @@ class VolumesProcessor(BaseProcessor):
             self._handle_folder(id, id_number, label, folder_stats)
 
     def _handle_volume(self, volume_id, volume_stats):
+        h_m = (f'_handle_volume for '
+               f'volume_id: {id} with volume_stats: {volume_stats}')
+        log.debug(h_m)
         if not volume_stats:
             return
         id_number = volume_stats.get(VolumeDictKeys.ID_NUMBER)

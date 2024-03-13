@@ -18,7 +18,6 @@ class BandwidthProcessorException(BaseProcessorException):
 
 
 class BandwidthProcessor(BaseProcessor):
-    # @classmethod
     def _handle_network_interface(self, network_id, network_stats):
         h_m = (f'_handle_network interface for '
                f'network_id: {network_id} with '
@@ -39,7 +38,6 @@ class BandwidthProcessor(BaseProcessor):
             is_default=is_default,
         ).set(tx)
 
-    # @classmethod
     def process(self, stats, last_updated=None):
         m = (f'_process_bandwidth => '
              f'stats: {stats} ({last_updated})')

@@ -24,7 +24,6 @@ class VolumesProcessorException(BaseProcessorException):
 
 
 class VolumesProcessor(BaseProcessor):
-    # @classmethod
     def _handle_folder(self, id, id_number, label, folder_stats):
         if not folder_stats:
             return
@@ -37,7 +36,6 @@ class VolumesProcessor(BaseProcessor):
             sharename=sharename,
         ).set(used_size)
 
-    # @classmethod
     def _iterate_volume_folders(self, id, id_number, label, volume_stats):
         folders = volume_stats.get(VolumeDictKeys.FOLDERS)
         if not folders:
@@ -45,7 +43,6 @@ class VolumesProcessor(BaseProcessor):
         for folder_stats in folders:
             self._handle_folder(id, id_number, label, folder_stats)
 
-    # @classmethod
     def _handle_volume(self, volume_id, volume_stats):
         if not volume_stats:
             return
@@ -81,7 +78,6 @@ class VolumesProcessor(BaseProcessor):
         # TODO: pass in size values so we can calculate the folder percentages
         self._iterate_volume_folders(volume_id, id_number, label, volume_stats)
 
-    # @classmethod
     def process(self, stats, last_updated=None):
         m = (f'_process_volumes => '
              f'stats: {stats} ({last_updated})')

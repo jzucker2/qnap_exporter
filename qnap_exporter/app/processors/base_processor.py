@@ -25,7 +25,6 @@ class BaseProcessor(object):
     def nas_name(self):
         return self._nas_name
 
-    # @classmethod
     def process(self, stats, last_updated=None):
         e_m = f'{self} no process implemented!'
         log.error(e_m)

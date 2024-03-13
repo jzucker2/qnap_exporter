@@ -10,7 +10,6 @@ class SystemHealthProcessorException(BaseProcessorException):
 
 
 class SystemHealthProcessor(BaseProcessor):
-    # @classmethod
     def process(self, stats, last_updated=None):
         m = (f'_process_system_health => '
              f'stats: {stats} ({last_updated})')

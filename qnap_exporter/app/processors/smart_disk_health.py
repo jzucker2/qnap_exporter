@@ -22,7 +22,6 @@ class SmartDiskHealthProcessorException(BaseProcessorException):
 
 
 class SmartDiskHealthProcessor(BaseProcessor):
-    # @classmethod
     def _process_capacity(self, disk_id, disk_stats):
         capacity = disk_stats.get(SmartDiskDictKeys.CAPACITY)
         capacity_pieces = capacity.split(' ')
@@ -33,7 +32,6 @@ class SmartDiskHealthProcessor(BaseProcessor):
         log.debug(c_m)
         return size, units
 
-    # @classmethod
     def _handle_smart_disk(self, smart_disk_id, smart_disk_stats):
         if not smart_disk_stats:
             return
@@ -69,7 +67,6 @@ class SmartDiskHealthProcessor(BaseProcessor):
             units=units
         ).set(capacity)
 
-    # @classmethod
     def process(self, stats, last_updated=None):
         m = (f'_process_smart_disk_health => '
              f'stats: {stats} ({last_updated})')

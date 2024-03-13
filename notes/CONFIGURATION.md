@@ -12,9 +12,9 @@
       # like `10.0.1.1` or `qnap`
       - QNAP_NAS_HOST=${QNAP_NAS_HOST}
       # like `admin` or `jordan`
-      - QNAP_USERNAME=${QNAP_NAS_USERNAME}
+      - QNAP_NAS_USERNAME=${QNAP_NAS_USERNAME}
       # hopefully something secret!
-      - QNAP_PASSWORD=${QNAP_NAS_PASSWORD}
+      - QNAP_NAS_PASSWORD=${QNAP_NAS_PASSWORD}
 ```
 
 ### Multiple Routers with yaml config file

@@ -69,14 +69,14 @@ class CollectorRouter(Router):
     def create_collectors(cls, config):
         collectors = []
         if cls.should_use_config_file():
-            log.debug('Using yml config file for router configs')
+            log.info('Using yml config file for router configs')
             nas_instances = ConfigParser.get_all_nas_instances(config)
             for nas_config in nas_instances:
                 collector = cls._create_collector_from_config(nas_config)
                 collectors.append(collector)
             return list(collectors)
         else:
-            log.debug('Using env vars for router configs')
+            log.info('Using env vars for router configs')
             collector = cls._create_env_var_collector()
             collectors.append(collector)
         return list(collectors)

@@ -86,17 +86,17 @@ class base_config(object):
     QNAP_NAS_HOST = os.getenv("QNAP_NAS_HOST",
                               default=DEFAULT_QNAP_NAS_HOST)
 
-    DEFAULT_QNAP_PORT = 8080
-    QNAP_PORT = os.getenv("QNAP_PORT",
-                          default=DEFAULT_QNAP_PORT)
+    DEFAULT_QNAP_NAS_PORT = 8080
+    QNAP_NAS_PORT = os.getenv("QNAP_NAS_PORT",
+                              default=DEFAULT_QNAP_NAS_PORT)
 
-    DEFAULT_QNAP_USERNAME = "admin"
-    QNAP_USERNAME = os.getenv("QNAP_USERNAME",
-                              default=DEFAULT_QNAP_USERNAME)
+    DEFAULT_QNAP_NAS_USERNAME = "admin"
+    QNAP_NAS_USERNAME = os.getenv("QNAP_NAS_USERNAME",
+                                  default=DEFAULT_QNAP_NAS_USERNAME)
 
-    DEFAULT_QNAP_PASSWORD = "password"
-    QNAP_PASSWORD = os.getenv("QNAP_PASSWORD",
-                              default=DEFAULT_QNAP_PASSWORD)
+    DEFAULT_QNAP_NAS_PASSWORD = "password"
+    QNAP_NAS_PASSWORD = os.getenv("QNAP_PASSWORD",
+                                  default=DEFAULT_QNAP_NAS_PASSWORD)
 
     # Flask-APScheduler
     SCHEDULER_API_ENABLED = True

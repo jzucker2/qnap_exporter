@@ -10,12 +10,12 @@ QNAP_NAS_NAME="Plex NAS"
 QNAP_NAS_HOST=10.0.1.1
 
 # likely should be left to default and you don't need to provide
-QNAP_PORT=8080
+QNAP_NAS_PORT=8080
 
 # this is your username
-QNAP_USERNAME=harry
+QNAP_NAS_USERNAME=harry
 # this is your password (note: no 2FA supported ATM)
-QNAP_PASSWORD=alohomora
+QNAP_NAS_PASSWORD=alohomora
 
 # how long to wait between metrics checks
 METRICS_INTERVAL_SECONDS=30

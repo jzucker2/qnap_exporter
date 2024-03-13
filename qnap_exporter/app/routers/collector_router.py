@@ -14,7 +14,7 @@ class CollectorRouterException(RouterException):
 class CollectorRouter(Router):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.collector = Collector.get_client()
+        self.collector = Collector.get_default_client()
 
     @property
     def service(self):

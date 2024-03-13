@@ -16,9 +16,9 @@ class Collector(object):
     DEFAULT_SYSTEM_HEALTH_VALUE = 'missing'
 
     @classmethod
-    def get_client(cls, qnap_client=None):
+    def get_default_client(cls, qnap_client=None):
         if not qnap_client:
-            qnap_client = QNAPClient.get_client()
+            qnap_client = QNAPClient.get_default_client()
         return cls(qnap_client)
 
     def __init__(self, qnap_client):
@@ -31,6 +31,10 @@ class Collector(object):
     def get_now(cls):
         return global_get_now()
 
+    @property
+    def nas_name(self):
+        return self.qnap_client.nas_name
+
     def __repr__(self):
         return f'Exporter => domains: {self.domains}'
 
@@ -38,24 +42,24 @@ class Collector(object):
         self._domains = {
             Domains.SYSTEM_STATS:
                 DomainStats(
-                    Domains.SYSTEM_STATS,
-                    self.qnap_client.get_system_stats),
+                    self.qnap_client,
+                    Domains.SYSTEM_STATS),
             Domains.BANDWIDTH:
                 DomainStats(
-                    Domains.BANDWIDTH,
-                    self.qnap_client.get_bandwidth),
+                    self.qnap_client,
+                    Domains.BANDWIDTH),
             Domains.VOLUMES:
                 DomainStats(
-                    Domains.VOLUMES,
-                    self.qnap_client.get_volumes),
+                    self.qnap_client,
+                    Domains.VOLUMES),
             Domains.SMART_DISK_HEALTH:
                 DomainStats(
-                    Domains.SMART_DISK_HEALTH,
-                    self.qnap_client.get_smart_disk_health),
+                    self.qnap_client,
+                    Domains.SMART_DISK_HEALTH),
             Domains.SYSTEM_HEALTH:
                 DomainStats(
-                    Domains.SYSTEM_HEALTH,
-                    self.qnap_client.get_system_health),
+                    self.qnap_client,
+                    Domains.SYSTEM_HEALTH),
         }
 
     @property

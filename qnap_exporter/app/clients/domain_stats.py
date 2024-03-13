@@ -25,18 +25,30 @@ class DomainStats(object):
     def get_now(cls):
         return global_get_now()
 
-    def __init__(self, domain, domain_func):
+    def __init__(self, qnap_client, domain):
         super().__init__()
+        self._qnap_client = qnap_client
         self._stats = None
         self._domain = domain
-        self._domain_func = domain_func
         self._last_updated = None
         self._created = self.get_now()
+
+    @property
+    def domain_func(self):
+        return
 
     def __repr__(self):
         return (f'DomainStats ==> domain: {self.domain} '
                 f'| created: {self.created} | '
                 f'last_updated: {self.last_updated} |')
+
+    @property
+    def qnap_client(self):
+        return self._qnap_client
+
+    @property
+    def nas_name(self):
+        return self.qnap_client.nas_name
 
     @property
     def created(self):
@@ -68,8 +80,21 @@ class DomainStats(object):
         self.set_last_updated(last_updated=last_updated)
 
     @property
-    def domain_func(self):
-        return self._domain_func
+    def _domain_func(self):
+        if self.domain == Domains.SYSTEM_STATS:
+            return self.qnap_client.get_system_stats
+        elif self.domain == Domains.VOLUMES:
+            return self.qnap_client.get_volumes
+        elif self.domain == Domains.SYSTEM_HEALTH:
+            return self.qnap_client.get_system_health
+        elif self.domain == Domains.SMART_DISK_HEALTH:
+            return self.qnap_client.get_smart_disk_health
+        elif self.domain == Domains.BANDWIDTH:
+            return self.qnap_client.self.qnap_client.get_bandwidth
+        else:
+            e_m = f'_domain_func failed for self.domain: {self.domain}'
+            log.error(e_m)
+            raise InvalidMetricsDomainStatsException(e_m)
 
     def update_stats(self, last_updated=None):
         # TODO: perfect spot to create empty stats and update,

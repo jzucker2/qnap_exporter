@@ -4,6 +4,7 @@ from prometheus_flask_exporter import Counter, Summary, Gauge
 
 
 class Labels(Enum):
+    NAS_NAME = 'nas_name'
     DEVICE = 'device'
     NETWORK_ID = 'network_id'
     NETWORK_NAME = 'network_name'
@@ -27,6 +28,12 @@ class Labels(Enum):
     def labels(cls):
         return list([
             cls.DEVICE.value,
+        ])
+
+    @classmethod
+    def default_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
         ])
 
     @classmethod

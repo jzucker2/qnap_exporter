@@ -3,6 +3,9 @@
 There's a bunch carried over from flask but only a few really important ones:
 
 ```
+# This is optional, and will be `default` if not provided
+QNAP_NAS_NAME="Plex NAS"
+
 # this is the IP address of your QNAP
 QNAP_HOST_IP=10.0.1.1
 

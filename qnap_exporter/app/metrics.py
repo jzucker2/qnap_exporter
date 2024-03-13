@@ -39,6 +39,7 @@ class Labels(Enum):
     @classmethod
     def bandwidth_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.NETWORK_ID.value,
             cls.NETWORK_NAME.value,
             cls.IS_DEFAULT.value,
@@ -57,6 +58,7 @@ class Labels(Enum):
     @classmethod
     def volume_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.VOLUME_ID.value,
             cls.VOLUME_ID_NUMBER.value,
             cls.VOLUME_LABEL.value,
@@ -65,6 +67,7 @@ class Labels(Enum):
     @classmethod
     def volume_folder_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.VOLUME_ID.value,
             cls.VOLUME_ID_NUMBER.value,
             cls.VOLUME_LABEL.value,
@@ -74,6 +77,7 @@ class Labels(Enum):
     @classmethod
     def smart_disk_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.DISK_ID.value,
             cls.DRIVE_NUMBER.value,
             cls.MODEL.value,
@@ -84,6 +88,7 @@ class Labels(Enum):
     @classmethod
     def smart_disk_capacity_labels(cls):
         return list([
+            cls.NAS_NAME.value,
             cls.DISK_ID.value,
             cls.DRIVE_NUMBER.value,
             cls.MODEL.value,

@@ -28,11 +28,13 @@ class BandwidthProcessor(BaseProcessor):
         tx = network_stats.get(NetworkInterfaceDictKeys.TX, 0)
         is_default = network_stats.get(NetworkInterfaceDictKeys.IS_DEFAULT)
         Metrics.BANDWIDTH_INTERFACE_RX.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             network_name=name,
             is_default=is_default,
         ).set(rx)
         Metrics.BANDWIDTH_INTERFACE_TX.labels(
+            nas_name=self.nas_name,
             network_id=network_id,
             network_name=name,
             is_default=is_default,

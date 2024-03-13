@@ -30,6 +30,7 @@ class VolumesProcessor(BaseProcessor):
         sharename = folder_stats.get(FolderDictKeys.SHARENAME)
         used_size = folder_stats.get(FolderDictKeys.USED_SIZE)
         Metrics.VOLUME_FOLDER_USED_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=id,
             volume_id_number=id_number,
             volume_label=label,
@@ -51,17 +52,20 @@ class VolumesProcessor(BaseProcessor):
         free_size = volume_stats.get(VolumeDictKeys.FREE_SIZE)
         total_size = volume_stats.get(VolumeDictKeys.TOTAL_SIZE)
         Metrics.VOLUME_FREE_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
         ).set(free_size)
         Metrics.VOLUME_TOTAL_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
         ).set(total_size)
         used_size = total_size - free_size
         Metrics.VOLUME_USED_SIZE.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,
@@ -71,6 +75,7 @@ class VolumesProcessor(BaseProcessor):
                f'usage: {usage} from ({used_size}/{total_size})')
         log.debug(u_m)
         Metrics.VOLUME_USAGE_PERCENT.labels(
+            nas_name=self.nas_name,
             volume_id=volume_id,
             volume_id_number=id_number,
             volume_label=label,

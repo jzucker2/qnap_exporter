@@ -42,6 +42,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
         temp_f = smart_disk_stats.get(SmartDiskDictKeys.TEMP_F)
         disk_type = smart_disk_stats.get(SmartDiskDictKeys.TYPE)
         Metrics.SMART_DISK_HEALTH_TEMP_C_VALUE.labels(
+            nas_name=self.nas_name,
             disk_id=smart_disk_id,
             drive_number=drive_number,
             model=model,
@@ -49,6 +50,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
             disk_type=disk_type,
         ).set(temp_c)
         Metrics.SMART_DISK_HEALTH_TEMP_F_VALUE.labels(
+            nas_name=self.nas_name,
             disk_id=smart_disk_id,
             drive_number=drive_number,
             model=model,
@@ -59,6 +61,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
             smart_disk_id,
             smart_disk_stats)
         Metrics.SMART_DISK_HEALTH_CAPACITY_VALUE.labels(
+            nas_name=self.nas_name,
             disk_id=smart_disk_id,
             drive_number=drive_number,
             model=model,

@@ -22,7 +22,7 @@ class BandwidthProcessor(BaseProcessor):
         h_m = (f'_handle_network interface for '
                f'network_id: {network_id} with '
                f'network_stats: {network_stats}')
-        log.info(h_m)
+        log.debug(h_m)
         name = network_stats.get(NetworkInterfaceDictKeys.NAME)
         rx = network_stats.get(NetworkInterfaceDictKeys.RX, 0)
         tx = network_stats.get(NetworkInterfaceDictKeys.TX, 0)

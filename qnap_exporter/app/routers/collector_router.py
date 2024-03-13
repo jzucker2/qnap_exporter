@@ -24,7 +24,6 @@ class CollectorRouter(Router):
     def nas_name(self):
         return self.collector.nas_name
 
-    @Metrics.SIMPLE_COLLECTOR_ROUTE_TIME.time()
     def handle_simple_collector_route_response(self):
         with Metrics.SIMPLE_COLLECTOR_ROUTE_TIME.labels(
             nas_name=self.nas_name,
@@ -39,7 +38,6 @@ class CollectorRouter(Router):
                 log.debug(f'self.collector: {self.collector}')
                 return final_response
 
-    @Metrics.COLLECTOR_METRICS_UPDATE_ROUTE_TIME.time()
     def handle_collector_metrics_update_route_response(self):
         with Metrics.COLLECTOR_METRICS_UPDATE_ROUTE_TIME.labels(
             nas_name=self.nas_name,

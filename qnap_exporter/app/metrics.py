@@ -112,7 +112,7 @@ class Metrics(object):
         Labels.nas_name_labels())
 
     COLLECTOR_METRICS_UPDATE_ROUTE_TIME = Summary(
-        'qnap_exporter_exporter_metrics_update_route_time',
+        'qnap_exporter_collector_metrics_update_route_time',
         'Time spent to handle collector metrics update route request',
         Labels.nas_name_labels())
 

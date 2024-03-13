@@ -27,11 +27,9 @@ class EnvVars(object):
     @classmethod
     def has_qnap_nas_config_env_vars(cls):
         qnap_nas_host = cls.get_default_qnap_nas_host()
-        print(f'qnap_nas_host: {qnap_nas_host}')
         if not qnap_nas_host:
             return False
         qnap_nas_password = cls.get_default_qnap_nas_password()
-        print(f'qnap_nas_password: {qnap_nas_password}')
         if not qnap_nas_password:
             return False
         return True

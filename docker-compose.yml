@@ -25,7 +25,7 @@ services:
       # this you can make up to be whatever you want, like `Living Room NAS`
       - QNAP_NAS_NAME=${QNAP_NAS_NAME}
       # like `10.0.1.1` or `qnap`
-      - QNAP_HOST_IP=${QNAP_NAS_IP}
+      - QNAP_NAS_HOST=${QNAP_NAS_HOST}
       # like `admin` or `jordan`
       - QNAP_USERNAME=${QNAP_NAS_USERNAME}
       # hopefully something secret!

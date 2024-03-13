@@ -82,9 +82,9 @@ class base_config(object):
     QNAP_NAS_NAME = os.getenv("QNAP_NAS_NAME",
                               default=DEFAULT_QNAP_NAS_NAME)
 
-    DEFAULT_QNAP_HOST_IP = "10.0.1.1"
-    QNAP_HOST_IP = os.getenv("QNAP_HOST_IP",
-                             default=DEFAULT_QNAP_HOST_IP)
+    DEFAULT_QNAP_NAS_HOST = "10.0.1.1"
+    QNAP_NAS_HOST = os.getenv("QNAP_NAS_HOST",
+                              default=DEFAULT_QNAP_NAS_HOST)
 
     DEFAULT_QNAP_PORT = 8080
     QNAP_PORT = os.getenv("QNAP_PORT",

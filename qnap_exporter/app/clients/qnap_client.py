@@ -7,7 +7,7 @@ log = app.logger
 
 
 QNAP_NAS_NAME = app.config.get('QNAP_NAS_NAME')
-QNAP_HOST_IP = app.config.get('QNAP_HOST_IP')
+QNAP_NAS_HOST = app.config.get('QNAP_NAS_HOST')
 QNAP_PORT = app.config.get('QNAP_PORT')
 QNAP_USERNAME = app.config.get('QNAP_USERNAME')
 QNAP_PASSWORD = app.config.get('QNAP_PASSWORD')
@@ -25,7 +25,7 @@ class QNAPClient(object):
     @classmethod
     def get_default_client(cls):
         nas_name = QNAP_NAS_NAME
-        host = QNAP_HOST_IP
+        host = QNAP_NAS_HOST
         port = QNAP_PORT
         username = QNAP_USERNAME
         password = QNAP_PASSWORD

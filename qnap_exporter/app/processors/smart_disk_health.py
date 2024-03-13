@@ -22,8 +22,8 @@ class SmartDiskHealthProcessorException(BaseProcessorException):
 
 
 class SmartDiskHealthProcessor(BaseProcessor):
-    @classmethod
-    def _process_capacity(cls, disk_id, disk_stats):
+    # @classmethod
+    def _process_capacity(self, disk_id, disk_stats):
         capacity = disk_stats.get(SmartDiskDictKeys.CAPACITY)
         capacity_pieces = capacity.split(' ')
         size = capacity_pieces[0]
@@ -33,8 +33,8 @@ class SmartDiskHealthProcessor(BaseProcessor):
         log.debug(c_m)
         return size, units
 
-    @classmethod
-    def _handle_smart_disk(cls, smart_disk_id, smart_disk_stats):
+    # @classmethod
+    def _handle_smart_disk(self, smart_disk_id, smart_disk_stats):
         if not smart_disk_stats:
             return
         drive_number = smart_disk_stats.get(SmartDiskDictKeys.DRIVE_NUMBER)
@@ -57,7 +57,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
             serial=serial,
             disk_type=disk_type,
         ).set(temp_f)
-        capacity, units = cls._process_capacity(
+        capacity, units = self._process_capacity(
             smart_disk_id,
             smart_disk_stats)
         Metrics.SMART_DISK_HEALTH_CAPACITY_VALUE.labels(
@@ -69,12 +69,12 @@ class SmartDiskHealthProcessor(BaseProcessor):
             units=units
         ).set(capacity)
 
-    @classmethod
-    def process(cls, stats, last_updated=None):
+    # @classmethod
+    def process(self, stats, last_updated=None):
         m = (f'_process_smart_disk_health => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
         if not stats:
             return
         for key, value in stats.items():
-            cls._handle_smart_disk(key, value)
+            self._handle_smart_disk(key, value)

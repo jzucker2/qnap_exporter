@@ -111,58 +111,81 @@ class DomainStats(object):
         else:
             self.set_stats(updated_stats, last_updated=last_updated)
 
-    def update_metrics(self):
+    def _get_domain_processor(self):
         if self.domain == Domains.SYSTEM_STATS:
-            self._process_system_stats()
+            return SystemStatsProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.VOLUMES:
-            self._process_volumes()
+            return VolumesProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.SYSTEM_HEALTH:
-            self._process_system_health()
+            return SystemHealthProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.SMART_DISK_HEALTH:
-            self._process_smart_disk_health()
+            return SmartDiskHealthProcessor.get_processor(self.nas_name)
         elif self.domain == Domains.BANDWIDTH:
-            self._process_bandwidth()
+            return BandwidthProcessor.get_processor(self.nas_name)
         else:
-            e_m = f'update_metrics failed for self.domain: {self.domain}'
+            e_m = f'_domain_processor failed for self.domain: {self.domain}'
             log.error(e_m)
             raise InvalidMetricsDomainStatsException(e_m)
 
-    def _process_system_stats(self):
+    def update_metrics(self):
         stats = self.stats
         last_updated = self.last_updated
-        m = (f'_process_system_stats => '
+        m = (f'update_metrics => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
-        SystemStatsProcessor.process(stats, last_updated=last_updated)
+        processor = self._get_domain_processor()
+        processor.process(stats, last_updated=last_updated)
+        # if self.domain == Domains.SYSTEM_STATS:
+        #     self._process_system_stats()
+        # elif self.domain == Domains.VOLUMES:
+        #     self._process_volumes()
+        # elif self.domain == Domains.SYSTEM_HEALTH:
+        #     self._process_system_health()
+        # elif self.domain == Domains.SMART_DISK_HEALTH:
+        #     self._process_smart_disk_health()
+        # elif self.domain == Domains.BANDWIDTH:
+        #     self._process_bandwidth()
+        # else:
+        #     e_m = f'update_metrics failed for self.domain: {self.domain}'
+        #     log.error(e_m)
+        #     raise InvalidMetricsDomainStatsException(e_m)
 
-    def _process_system_health(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_system_health => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        SystemHealthProcessor.process(stats, last_updated=last_updated)
-
-    def _process_volumes(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_volumes => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        VolumesProcessor.process(stats, last_updated=last_updated)
-
-    def _process_smart_disk_health(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_smart_disk_health => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        SmartDiskHealthProcessor.process(stats, last_updated=last_updated)
-
-    def _process_bandwidth(self):
-        stats = self.stats
-        last_updated = self.last_updated
-        m = (f'_process_bandwidth => '
-             f'stats: {stats} ({last_updated})')
-        log.debug(m)
-        BandwidthProcessor.process(stats, last_updated=last_updated)
+    # def _process_system_stats(self):
+    #     stats = self.stats
+    #     last_updated = self.last_updated
+    #     m = (f'_process_system_stats => '
+    #          f'stats: {stats} ({last_updated})')
+    #     log.debug(m)
+    #     SystemStatsProcessor.process(stats, last_updated=last_updated)
+    #
+    # def _process_system_health(self):
+    #     stats = self.stats
+    #     last_updated = self.last_updated
+    #     m = (f'_process_system_health => '
+    #          f'stats: {stats} ({last_updated})')
+    #     log.debug(m)
+    #     SystemHealthProcessor.process(stats, last_updated=last_updated)
+    #
+    # def _process_volumes(self):
+    #     stats = self.stats
+    #     last_updated = self.last_updated
+    #     m = (f'_process_volumes => '
+    #          f'stats: {stats} ({last_updated})')
+    #     log.debug(m)
+    #     VolumesProcessor.process(stats, last_updated=last_updated)
+    #
+    # def _process_smart_disk_health(self):
+    #     stats = self.stats
+    #     last_updated = self.last_updated
+    #     m = (f'_process_smart_disk_health => '
+    #          f'stats: {stats} ({last_updated})')
+    #     log.debug(m)
+    #     SmartDiskHealthProcessor.process(stats, last_updated=last_updated)
+    #
+    # def _process_bandwidth(self):
+    #     stats = self.stats
+    #     last_updated = self.last_updated
+    #     m = (f'_process_bandwidth => '
+    #          f'stats: {stats} ({last_updated})')
+    #     log.debug(m)
+    #     BandwidthProcessor.process(stats, last_updated=last_updated)

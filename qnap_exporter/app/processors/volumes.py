@@ -24,8 +24,8 @@ class VolumesProcessorException(BaseProcessorException):
 
 
 class VolumesProcessor(BaseProcessor):
-    @classmethod
-    def _handle_folder(cls, id, id_number, label, folder_stats):
+    # @classmethod
+    def _handle_folder(self, id, id_number, label, folder_stats):
         if not folder_stats:
             return
         sharename = folder_stats.get(FolderDictKeys.SHARENAME)
@@ -37,16 +37,16 @@ class VolumesProcessor(BaseProcessor):
             sharename=sharename,
         ).set(used_size)
 
-    @classmethod
-    def _iterate_volume_folders(cls, id, id_number, label, volume_stats):
+    # @classmethod
+    def _iterate_volume_folders(self, id, id_number, label, volume_stats):
         folders = volume_stats.get(VolumeDictKeys.FOLDERS)
         if not folders:
             return
         for folder_stats in folders:
-            cls._handle_folder(id, id_number, label, folder_stats)
+            self._handle_folder(id, id_number, label, folder_stats)
 
-    @classmethod
-    def _handle_volume(cls, volume_id, volume_stats):
+    # @classmethod
+    def _handle_volume(self, volume_id, volume_stats):
         if not volume_stats:
             return
         id_number = volume_stats.get(VolumeDictKeys.ID_NUMBER)
@@ -79,14 +79,14 @@ class VolumesProcessor(BaseProcessor):
             volume_label=label,
         ).set(usage)
         # TODO: pass in size values so we can calculate the folder percentages
-        cls._iterate_volume_folders(volume_id, id_number, label, volume_stats)
+        self._iterate_volume_folders(volume_id, id_number, label, volume_stats)
 
-    @classmethod
-    def process(cls, stats, last_updated=None):
+    # @classmethod
+    def process(self, stats, last_updated=None):
         m = (f'_process_volumes => '
              f'stats: {stats} ({last_updated})')
         log.debug(m)
         if not stats:
             return
         for key, value in stats.items():
-            cls._handle_volume(key, value)
+            self._handle_volume(key, value)

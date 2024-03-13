@@ -20,6 +20,10 @@ class CollectorRouter(Router):
     def service(self):
         return 'collector'
 
+    @property
+    def nas_name(self):
+        return self.collector.nas_name
+
     @Metrics.SIMPLE_COLLECTOR_ROUTE_TIME.time()
     def handle_simple_collector_route_response(self):
         with Metrics.SIMPLE_COLLECTOR_ROUTE_EXCEPTIONS.count_exceptions():

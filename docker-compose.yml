@@ -8,11 +8,19 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://host.docker.internal:2003/api/v1/health || exit 1" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
       - "2003:2003"
       - "1805:1805"
+    volumes:
+      - ./exporter_config.yaml:/etc/qnap_exporter/exporter_config.yaml
     environment:
       # like `10.0.1.1` or `qnap`
       - QNAP_HOST_IP=${QNAP_NAS_IP}

@@ -23,13 +23,17 @@ class Collector(object):
 
     def __init__(self, qnap_client):
         super().__init__()
-        self.qnap_client = qnap_client
+        self._qnap_client = qnap_client
         self._domains = None
         self._set_up_domains()
 
     @classmethod
     def get_now(cls):
         return global_get_now()
+
+    @property
+    def qnap_client(self):
+        return self._qnap_client
 
     @property
     def nas_name(self):

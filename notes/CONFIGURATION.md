@@ -19,16 +19,16 @@
 ### Multiple Routers with yaml config file
 
 ```yaml
-qnap_instances:
-  - qnap_name: Living Room NAS
-    qnap_ip: http://10.0.1.1
-    qnap_username: admin
-    qnap_password: foo
+nas_instances:
+  - nas_name: Living Room NAS
+    nas_ip: http://10.0.1.1
+    nas_username: admin
+    nas_password: foo
 
-  - qnap_name: Bedroom Room NAS
-    qnap_ip: http://10.0.1.2
-    qnap_username: admin
-    qnap_password: bar
+  - nas_name: Bedroom Room NAS
+    nas_ip: http://10.0.1.2
+    nas_username: admin
+    nas_password: bar
 ```
 
 ## Development

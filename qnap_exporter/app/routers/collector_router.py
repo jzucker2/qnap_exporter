@@ -35,7 +35,7 @@ class CollectorRouter(Router):
     @property
     def collectors(self):
         if not self._collectors:
-            collectors = self.create_collectors(self.config)
+            collectors = self._create_collectors(self.config)
             self._collectors = list(collectors)
         return self._collectors
 
@@ -70,19 +70,18 @@ class CollectorRouter(Router):
         collector = Collector.get_collector(qnap_client)
         return collector
 
-    @classmethod
-    def create_collectors(cls, config):
+    def _create_collectors(self):
         collectors = []
-        if cls.should_use_config_file():
+        if self.should_use_config_file():
             log.debug('Using yml config file for router configs')
-            nas_instances = ConfigParser.get_all_nas_instances(config)
+            nas_instances = ConfigParser.get_all_nas_instances(self.config)
             log.debug(f'nas_instances: {nas_instances}')
             for nas_config in nas_instances:
-                collector = cls._create_collector_from_config(nas_config)
+                collector = self._create_collector_from_config(nas_config)
                 collectors.append(collector)
         else:
             log.debug('Using env vars for router configs')
-            collector = cls._create_env_var_collector()
+            collector = self._create_env_var_collector()
             collectors.append(collector)
         log.debug(f'collectors: {collectors}')
         return list(collectors)

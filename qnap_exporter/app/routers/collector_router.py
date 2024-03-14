@@ -135,4 +135,4 @@ class CollectorRouter(Router):
             response = self._handle_collector_metrics_update(collector)
             cr_m = f'collector: {collector} had response: {response}'
             log.info(cr_m)
-            return final_response
+        return final_response

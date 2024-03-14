@@ -93,7 +93,7 @@ class Collector(object):
             d_m = (f'self.nas_name: {self.nas_name} fetching '
                    f'stats for domain: {domain} '
                    f'at last_updated: {last_updated}')
-            log.info(d_m)
+            log.debug(d_m)
             domain_stats.update_stats(last_updated=last_updated)
 
     def update_all_domains_metrics(self, check_first=True, last_updated=None):

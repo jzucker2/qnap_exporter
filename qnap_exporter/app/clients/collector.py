@@ -99,5 +99,5 @@ class Collector(object):
     def update_all_domains_metrics(self, check_first=True, last_updated=None):
         # FIXME: check for `last_updated` first
         for domain, domain_stats in self.domains.items():
-            log.debug(f'updating metrics for domain: {domain}')
+            log.info(f'updating metrics for domain: {domain}')
             domain_stats.update_metrics()

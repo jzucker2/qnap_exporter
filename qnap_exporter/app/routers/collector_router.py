@@ -76,7 +76,6 @@ class CollectorRouter(Router):
             for nas_config in nas_instances:
                 collector = cls._create_collector_from_config(nas_config)
                 collectors.append(collector)
-            # return list(collectors)
         else:
             log.debug('Using env vars for router configs')
             collector = cls._create_env_var_collector()

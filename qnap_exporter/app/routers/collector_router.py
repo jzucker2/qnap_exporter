@@ -18,11 +18,15 @@ class CollectorRouterException(RouterException):
 class CollectorRouter(Router):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        config = ConfigParser.import_config()
-        log.debug(f'config: {config}')
         self.collector = self._create_env_var_collector()
-        self.config = config
         self._collectors = None
+        self._config = None
+
+    @property
+    def config(self):
+        if not self._config:
+            self._config = ConfigParser.import_config()
+        return self._config
 
     @property
     def service(self):

@@ -51,7 +51,7 @@ class CollectorRouter(Router):
 
     @classmethod
     def _create_collector_from_config(cls, nas_config):
-        log.info(f'nas_config: {nas_config}')
+        log.debug(f'nas_config: {nas_config}')
         nas_name = nas_config[ConfigKeys.NAS_NAME.key_name]
         nas_host = nas_config[ConfigKeys.NAS_HOST.key_name]
         nas_port = nas_config[ConfigKeys.NAS_PORT.key_name]
@@ -70,18 +70,18 @@ class CollectorRouter(Router):
     def create_collectors(cls, config):
         collectors = []
         if cls.should_use_config_file():
-            log.info('Using yml config file for router configs')
+            log.debug('Using yml config file for router configs')
             nas_instances = ConfigParser.get_all_nas_instances(config)
-            log.info(f'nas_instances: {nas_instances}')
+            log.debug(f'nas_instances: {nas_instances}')
             for nas_config in nas_instances:
                 collector = cls._create_collector_from_config(nas_config)
                 collectors.append(collector)
             # return list(collectors)
         else:
-            log.info('Using env vars for router configs')
+            log.debug('Using env vars for router configs')
             collector = cls._create_env_var_collector()
             collectors.append(collector)
-        log.info(f'collectors: {collectors}')
+        log.debug(f'collectors: {collectors}')
         return list(collectors)
 
     @property
@@ -104,7 +104,7 @@ class CollectorRouter(Router):
 
     def _handle_collector_metrics_update(self, collector):
         nas_name = collector.nas_name
-        log.info(f'collector: {collector} nas_name: {nas_name}')
+        log.debug(f'collector: {collector} nas_name: {nas_name}')
         with Metrics.COLLECTOR_METRICS_UPDATE_ROUTE_TIME.labels(
             nas_name=nas_name,
         ).time():
@@ -134,5 +134,5 @@ class CollectorRouter(Router):
         for collector in self.collectors:
             response = self._handle_collector_metrics_update(collector)
             cr_m = f'collector: {collector} had response: {response}'
-            log.info(cr_m)
+            log.debug(cr_m)
         return final_response

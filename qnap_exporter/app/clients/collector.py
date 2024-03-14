@@ -92,11 +92,11 @@ class Collector(object):
         for domain, domain_stats in self.domains.items():
             d_m = (f'fetching stats for domain: {domain} '
                    f'at last_updated: {last_updated}')
-            log.debug(d_m)
+            log.info(d_m)
             domain_stats.update_stats(last_updated=last_updated)
 
     def update_all_domains_metrics(self, check_first=True, last_updated=None):
         # FIXME: check for `last_updated` first
         for domain, domain_stats in self.domains.items():
-            log.info(f'updating metrics for domain: {domain}')
+            log.debug(f'updating metrics for domain: {domain}')
             domain_stats.update_metrics()

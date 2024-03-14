@@ -26,4 +26,4 @@ def perform_qnap_metrics_update():
         router = CollectorRouter()
         response = router.handle_all_collectors_metrics_update_route_response()
         r_m = f'scheduled qnap metrics update got response: {response}'
-        log.info(r_m)
+        log.debug(r_m)

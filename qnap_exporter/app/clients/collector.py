@@ -90,7 +90,8 @@ class Collector(object):
         a_m = f'fetching all domains stats for last_updated: {last_updated}'
         log.info(a_m)
         for domain, domain_stats in self.domains.items():
-            d_m = (f'fetching stats for domain: {domain} '
+            d_m = (f'self.nas_name: {self.nas_name} fetching '
+                   f'stats for domain: {domain} '
                    f'at last_updated: {last_updated}')
             log.info(d_m)
             domain_stats.update_stats(last_updated=last_updated)

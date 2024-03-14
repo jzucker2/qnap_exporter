@@ -16,9 +16,13 @@ class Collector(object):
     DEFAULT_SYSTEM_HEALTH_VALUE = 'missing'
 
     @classmethod
-    def get_default_client(cls, qnap_client=None):
+    def get_default_collector(cls, qnap_client=None):
         if not qnap_client:
             qnap_client = QNAPClient.get_default_client()
+        return cls(qnap_client)
+
+    @classmethod
+    def get_collector(cls, qnap_client):
         return cls(qnap_client)
 
     def __init__(self, qnap_client):
@@ -40,7 +44,8 @@ class Collector(object):
         return self.qnap_client.nas_name
 
     def __repr__(self):
-        return f'Collector => domains: {self.domains}'
+        m = f'Collector => nas_name: {self.nas_name} domains: {self.domains}'
+        return m
 
     def _set_up_domains(self):
         # FIXME: this is repetitive
@@ -85,7 +90,8 @@ class Collector(object):
         a_m = f'fetching all domains stats for last_updated: {last_updated}'
         log.info(a_m)
         for domain, domain_stats in self.domains.items():
-            d_m = (f'fetching stats for domain: {domain} '
+            d_m = (f'self.nas_name: {self.nas_name} fetching '
+                   f'stats for domain: {domain} '
                    f'at last_updated: {last_updated}')
             log.debug(d_m)
             domain_stats.update_stats(last_updated=last_updated)

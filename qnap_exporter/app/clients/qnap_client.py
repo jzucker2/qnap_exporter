@@ -7,10 +7,10 @@ log = app.logger
 
 
 QNAP_NAS_NAME = app.config.get('QNAP_NAS_NAME')
-QNAP_HOST_IP = app.config.get('QNAP_HOST_IP')
-QNAP_PORT = app.config.get('QNAP_PORT')
-QNAP_USERNAME = app.config.get('QNAP_USERNAME')
-QNAP_PASSWORD = app.config.get('QNAP_PASSWORD')
+QNAP_NAS_HOST = app.config.get('QNAP_NAS_HOST')
+QNAP_NAS_PORT = app.config.get('QNAP_NAS_PORT')
+QNAP_NAS_USERNAME = app.config.get('QNAP_NAS_USERNAME')
+QNAP_NAS_PASSWORD = app.config.get('QNAP_NAS_PASSWORD')
 
 
 class QNAPClientException(Exception):
@@ -25,10 +25,14 @@ class QNAPClient(object):
     @classmethod
     def get_default_client(cls):
         nas_name = QNAP_NAS_NAME
-        host = QNAP_HOST_IP
-        port = QNAP_PORT
-        username = QNAP_USERNAME
-        password = QNAP_PASSWORD
+        host = QNAP_NAS_HOST
+        port = QNAP_NAS_PORT
+        username = QNAP_NAS_USERNAME
+        password = QNAP_NAS_PASSWORD
+        return cls(host, port, username, password, nas_name=nas_name)
+
+    @classmethod
+    def get_collecting_client(cls, nas_name, host, port, username, password):
         return cls(host, port, username, password, nas_name=nas_name)
 
     def __init__(self,

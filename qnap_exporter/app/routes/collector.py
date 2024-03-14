@@ -14,4 +14,4 @@ def handle_simple_collector_route():
 @app.route('/api/v1/qnap/collector/metrics/update')
 def handle_collector_metrics_update_route():
     router = CollectorRouter()
-    return router.handle_collector_metrics_update_route_response()
+    return router.handle_all_collectors_metrics_update_route_response()

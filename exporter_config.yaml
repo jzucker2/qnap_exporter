@@ -1,0 +1,12 @@
+nas_instances:
+  - nas_name: foo NAS
+    nas_host: 10.0.1.1
+    nas_port: 8080
+    nas_username: admin
+    nas_password: foo
+
+  - nas_name: bar NAS
+    nas_host: 10.0.1.2
+    nas_port: 8080
+    nas_username: admin
+    nas_password: bar

@@ -135,6 +135,7 @@ class Metrics(object):
         Labels.nas_name_labels())
 
     # Below are for actual QNAP NAS instances
+    # for units, see https://github.com/home-assistant/core/blob/dev/homeassistant/components/qnap/sensor.py
 
     SYSTEM_STATS_CPU_TEMP_C_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_c',

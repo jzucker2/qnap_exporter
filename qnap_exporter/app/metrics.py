@@ -135,6 +135,7 @@ class Metrics(object):
         Labels.nas_name_labels())
 
     # Below are for actual QNAP NAS instances
+    # for units, see https://github.com/home-assistant/core/blob/dev/homeassistant/components/qnap/sensor.py  # noqa: E501
 
     SYSTEM_STATS_CPU_TEMP_C_VALUE = Gauge(
         'qnap_exporter_system_stats_cpu_temp_c',
@@ -187,17 +188,17 @@ class Metrics(object):
         Labels.default_system_stats_labels())
 
     SYSTEM_STATS_NICS_RX_PACKETS = Gauge(
-        'qnap_exporter_system_stats_nics_rx_packets',
+        'qnap_exporter_system_stats_nics_rx_packets_total',
         'The QNAP system stats nics rx_packets',
         Labels.nics_labels())
 
     SYSTEM_STATS_NICS_TX_PACKETS = Gauge(
-        'qnap_exporter_system_stats_nics_tx_packets',
+        'qnap_exporter_system_stats_nics_tx_packets_total',
         'The QNAP system stats nics tx_packets',
         Labels.nics_labels())
 
     SYSTEM_STATS_NICS_ERR_PACKETS = Gauge(
-        'qnap_exporter_system_stats_nics_err_packets',
+        'qnap_exporter_system_stats_nics_err_packets_total',
         'The QNAP system stats nics err_packets',
         Labels.nics_labels())
 

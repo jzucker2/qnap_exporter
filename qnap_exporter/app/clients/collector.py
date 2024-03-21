@@ -87,7 +87,9 @@ class Collector(object):
         if not last_updated:
             # for a uniform timestamp for all the metrics fetched
             last_updated = self.get_now()
-        a_m = f'fetching all domains stats for last_updated: {last_updated}'
+        a_m = (f'fetching all domains stats from '
+               f'nas_name: {self.nas_name} for '
+               f'last_updated: {last_updated}')
         log.info(a_m)
         for domain, domain_stats in self.domains.items():
             d_m = (f'self.nas_name: {self.nas_name} fetching '
@@ -99,5 +101,7 @@ class Collector(object):
     def update_all_domains_metrics(self, check_first=True, last_updated=None):
         # FIXME: check for `last_updated` first
         for domain, domain_stats in self.domains.items():
-            log.info(f'updating metrics for domain: {domain}')
+            d_m = (f'from nas_name: {self.nas_name} updating '
+                   f'metrics for domain: {domain}')
+            log.info(d_m)
             domain_stats.update_metrics()

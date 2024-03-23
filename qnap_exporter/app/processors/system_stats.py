@@ -28,6 +28,7 @@ class NICSInterfaceDictKeys(object):
 
 
 class CPUDictKeys(object):
+    MODEL = 'model'
     TEMP_C = 'temp_c'
     TEMP_F = 'temp_f'
     USAGE_PERCENT = 'usage_percent'
@@ -47,7 +48,18 @@ class SystemDictKeys(object):
     TIMEZONE = 'timezone'
 
 
+class FirmwareDictKeys(object):
+    VERSION = 'version'
+    BUILD = 'build'
+    PATCH = 'patch'
+    BUILD_TIME = 'build_time'
+
+
 class SystemStatsProcessorException(BaseProcessorException):
+    pass
+
+
+class InvalidFirmwarePropertyProcessorException(SystemStatsProcessorException):
     pass
 
 
@@ -73,6 +85,20 @@ class SystemStatsProcessor(BaseProcessor):
     def _handle_system_dict(self, stats):
         system = stats.get(SystemStatsKeys.SYSTEM)
         log.debug(f'system: {system}')
+        model = system.get(SystemDictKeys.MODEL)
+        name = system.get(SystemDictKeys.NAME)
+        timezone = system.get(SystemDictKeys.TIMEZONE)
+        serial = system.get(SystemDictKeys.SERIAL_NUMBER)
+        i_m = (f'system info model: {model}, name: {name}, '
+               f'timezone: {timezone}, serial: {serial}')
+        log.debug(i_m)
+        Metrics.NAS_SYSTEM_INFO.labels(
+            nas_name=self.nas_name,
+            system_name=name,
+            system_model=model,
+            system_serial_number=serial,
+            system_timezone=timezone,
+        ).set(1)
         temp_c = system.get(SystemDictKeys.TEMP_C)
         temp_f = system.get(SystemDictKeys.TEMP_F)
         Metrics.SYSTEM_STATS_SYSTEM_TEMP_C_VALUE.labels(
@@ -118,6 +144,12 @@ class SystemStatsProcessor(BaseProcessor):
         cpu = stats.get(SystemStatsKeys.CPU)
         if not cpu:
             return
+        cpu_model = cpu.get(CPUDictKeys.MODEL)
+        log.debug(f'cpu_model: {cpu_model}')
+        Metrics.NAS_CPU_INFO.labels(
+            nas_name=self.nas_name,
+            cpu_model=cpu_model,
+        ).set(1)
         temp_c = cpu.get(CPUDictKeys.TEMP_C, 0)
         Metrics.SYSTEM_STATS_CPU_TEMP_C_VALUE.labels(
             nas_name=self.nas_name,
@@ -177,6 +209,29 @@ class SystemStatsProcessor(BaseProcessor):
         for key, value in nics.items():
             self._handle_nics_interface(key, value)
 
+    def _handle_firmware_dict(self, stats):
+        firmware = stats.get(SystemStatsKeys.FIRMWARE)
+        if not firmware:
+            return
+        log.debug(f'got firmware: {firmware}')
+        labels = {
+            'nas_name': self.nas_name,
+        }
+        labels.update({k: str(v) for k, v in firmware.items()})
+        Metrics.NAS_FIRMWARE_INFO.labels(**labels).set(1)
+
+    def _handle_dns_dict(self, stats):
+        dns = stats.get(SystemStatsKeys.DNS)
+        if not dns:
+            return
+        log.debug(f'got dns: {dns}')
+        for dns_value in dns:
+            # TODO: this may overwrite?
+            Metrics.NAS_DNS_INFO.labels(
+                nas_name=self.nas_name,
+                dns=dns_value,
+            ).set(1)
+
     def process(self, stats, last_updated=None):
         m = (f'_process_system_stats => '
              f'stats: {stats} ({last_updated})')
@@ -187,4 +242,6 @@ class SystemStatsProcessor(BaseProcessor):
         self._handle_memory_dict(stats)
         self._handle_uptime_dict(stats)
         self._handle_nics_dict(stats)
+        self._handle_firmware_dict(stats)
         self._handle_system_dict(stats)
+        self._handle_dns_dict(stats)

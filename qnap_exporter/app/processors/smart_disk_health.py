@@ -41,6 +41,8 @@ class SmartDiskHealthProcessor(BaseProcessor):
         temp_c = smart_disk_stats.get(SmartDiskDictKeys.TEMP_C)
         temp_f = smart_disk_stats.get(SmartDiskDictKeys.TEMP_F)
         disk_type = smart_disk_stats.get(SmartDiskDictKeys.TYPE)
+        health = smart_disk_stats.get(SmartDiskDictKeys.HEALTH)
+        log.debug(f'drive_number: {drive_number} got health: {health}')
         Metrics.SMART_DISK_HEALTH_TEMP_C_VALUE.labels(
             nas_name=self.nas_name,
             disk_id=smart_disk_id,
@@ -48,6 +50,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
             model=model,
             serial=serial,
             disk_type=disk_type,
+            disk_health=health,
         ).set(temp_c)
         Metrics.SMART_DISK_HEALTH_TEMP_F_VALUE.labels(
             nas_name=self.nas_name,
@@ -56,6 +59,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
             model=model,
             serial=serial,
             disk_type=disk_type,
+            disk_health=health,
         ).set(temp_f)
         capacity, units = self._process_capacity(
             smart_disk_id,
@@ -67,7 +71,8 @@ class SmartDiskHealthProcessor(BaseProcessor):
             model=model,
             serial=serial,
             disk_type=disk_type,
-            units=units
+            units=units,
+            disk_health=health,
         ).set(capacity)
 
     def process(self, stats, last_updated=None):

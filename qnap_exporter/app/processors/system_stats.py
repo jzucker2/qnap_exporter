@@ -122,18 +122,18 @@ class SystemStatsProcessor(BaseProcessor):
         if not memory:
             return
         free = memory.get(MemoryDictKeys.FREE, 0)
-        Metrics.SYSTEM_STATS_MEMORY_VALUE.labels(
+        Metrics.SYSTEM_STATS_MEMORY_TYPE_VALUE.labels(
             nas_name=self.nas_name,
             memory_type=MemoryTypes.FREE.value,
         ).set(free)
         total = memory.get(MemoryDictKeys.TOTAL, 0)
-        Metrics.SYSTEM_STATS_MEMORY_VALUE.labels(
+        Metrics.SYSTEM_STATS_MEMORY_TYPE_VALUE.labels(
             nas_name=self.nas_name,
             memory_type=MemoryTypes.TOTAL.value,
         ).set(total)
         log.debug(f'memory stats => {free}/{total}')
         used = total - free
-        Metrics.SYSTEM_STATS_MEMORY_VALUE.labels(
+        Metrics.SYSTEM_STATS_MEMORY_TYPE_VALUE.labels(
             nas_name=self.nas_name,
             memory_type=MemoryTypes.USED.value,
         ).set(used)

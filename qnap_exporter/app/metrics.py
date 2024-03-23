@@ -228,8 +228,8 @@ class Metrics(object):
         'Current system CPU usage percentage',
         Labels.default_system_stats_labels())
 
-    SYSTEM_STATS_MEMORY_VALUE = Gauge(
-        'qnap_exporter_system_stats_memory_total',
+    SYSTEM_STATS_MEMORY_TYPE_VALUE = Gauge(
+        'qnap_exporter_system_stats_memory_type_total',
         'Current system memory for memory_type of the QNAP',
         Labels.memory_stats_labels())
 

@@ -217,8 +217,7 @@ class SystemStatsProcessor(BaseProcessor):
         labels = {
             'nas_name': self.nas_name,
         }
-        info_labels = {k: str(v) for k, v in firmware.items()}
-        labels.update(info_labels)
+        labels.update({k: str(v) for k, v in firmware.items()})
         Metrics.NAS_FIRMWARE_INFO.labels(**labels).set(1)
 
     def _handle_dns_dict(self, stats):

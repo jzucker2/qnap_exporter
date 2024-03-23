@@ -46,6 +46,9 @@ class SmartDiskHealthProcessor(BaseProcessor):
         return size, units
 
     def _normalize_capacity(self, size, units):
+        n_m = (f'normalize size {type(size)}: {size} '
+               f'and units {type(units)}: {units}')
+        log.info(n_m)
         if units == DriveUnits.TB:
             return (size / (1024 * 1024))
         elif units == DriveUnits.GB:

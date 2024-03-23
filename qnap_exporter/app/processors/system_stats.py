@@ -217,7 +217,7 @@ class SystemStatsProcessor(BaseProcessor):
         labels = {
             'nas_name': self.nas_name,
         }
-        info_labels = {k: str(v) for k, v in firmware}
+        info_labels = {k: str(v) for k, v in firmware.items()}
         labels.update(info_labels)
         Metrics.NAS_FIRMWARE_INFO.labels(**labels).set(1)
 
@@ -243,5 +243,6 @@ class SystemStatsProcessor(BaseProcessor):
         self._handle_memory_dict(stats)
         self._handle_uptime_dict(stats)
         self._handle_nics_dict(stats)
+        self._handle_firmware_dict(stats)
         self._handle_system_dict(stats)
         self._handle_dns_dict(stats)

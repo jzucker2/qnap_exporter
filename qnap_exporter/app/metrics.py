@@ -37,6 +37,7 @@ class Labels(Enum):
     DNS = 'dns'
     MEMORY_TYPE = 'memory_type'
     LINK_STATUS = 'link_status'
+    TRANSFER_TYPE = 'transfer_type'
 
     @classmethod
     def labels(cls):
@@ -64,6 +65,7 @@ class Labels(Enum):
             cls.NETWORK_ID.value,
             cls.NETWORK_NAME.value,
             cls.IS_DEFAULT.value,
+            cls.TRANSFER_TYPE.value,
         ])
 
     @classmethod
@@ -77,6 +79,14 @@ class Labels(Enum):
             cls.LINK_STATUS.value,
             cls.MASK.value,
         ])
+
+    @classmethod
+    def nics_packet_labels(cls):
+        final_packet_labels = cls.nics_labels()
+        final_packet_labels.extend([
+            cls.TRANSFER_TYPE.value,
+        ])
+        return list(final_packet_labels)
 
     @classmethod
     def volume_labels(cls):
@@ -243,34 +253,19 @@ class Metrics(object):
         'The total system uptime of the QNAP in seconds',
         Labels.default_system_stats_labels())
 
-    SYSTEM_STATS_NICS_RX_PACKETS = Gauge(
-        'qnap_exporter_system_stats_nics_rx_packets_total',
-        'The QNAP system stats nics rx_packets',
-        Labels.nics_labels())
-
-    SYSTEM_STATS_NICS_TX_PACKETS = Gauge(
-        'qnap_exporter_system_stats_nics_tx_packets_total',
-        'The QNAP system stats nics tx_packets',
-        Labels.nics_labels())
-
-    SYSTEM_STATS_NICS_ERR_PACKETS = Gauge(
-        'qnap_exporter_system_stats_nics_err_packets_total',
-        'The QNAP system stats nics err_packets',
-        Labels.nics_labels())
+    SYSTEM_STATS_NICS_PACKETS_TOTAL = Gauge(
+        'qnap_exporter_system_stats_nics_packets_total',
+        'The QNAP system stats nics packets by type',
+        Labels.nics_packet_labels())
 
     SYSTEM_STATS_NICS_MAX_SPEED = Gauge(
         'qnap_exporter_system_stats_nics_max_speed',
         'The QNAP system stats nics max speed',
         Labels.nics_labels())
 
-    BANDWIDTH_INTERFACE_RX = Gauge(
-        'qnap_exporter_bandwidth_interface_rx',
-        'The QNAP bandwidth network interface rx value',
-        Labels.bandwidth_labels())
-
-    BANDWIDTH_INTERFACE_TX = Gauge(
-        'qnap_exporter_bandwidth_interface_tx',
-        'The QNAP bandwidth network interface tx value',
+    BANDWIDTH_INTERFACE_TRANSFER_RATE = Gauge(
+        'qnap_exporter_bandwidth_interface_transfer_rate',
+        'The QNAP bandwidth network interface transfer rate value',
         Labels.bandwidth_labels())
 
     VOLUME_FREE_SIZE = Gauge(
@@ -311,6 +306,11 @@ class Metrics(object):
     SMART_DISK_HEALTH_CAPACITY_VALUE = Gauge(
         'qnap_exporter_smart_disk_health_capacity',
         'Current capacity of disk in dynamically labelled units',
+        Labels.smart_disk_capacity_labels())
+
+    SMART_DISK_HEALTH_CAPACITY_NORMALIZED_VALUE = Gauge(
+        'qnap_exporter_smart_disk_health_capacity_normalized',
+        'Current capacity (normalized to MB) of disk in labelled units',
         Labels.smart_disk_capacity_labels())
 
     NAS_FIRMWARE_INFO = Gauge(

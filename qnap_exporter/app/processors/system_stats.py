@@ -2,6 +2,7 @@ from datetime import timedelta
 from flask import current_app as app
 from ..metrics import Metrics
 from ..common.memory_types import MemoryTypes
+from ..common.bandwidth_transfer_types import BandwidthTransferTypes
 from ..common.system_stats_keys import SystemStatsKeys
 from .base_processor import BaseProcessorException, BaseProcessor
 
@@ -61,6 +62,10 @@ class SystemStatsProcessorException(BaseProcessorException):
 
 
 class InvalidFirmwarePropertyProcessorException(SystemStatsProcessorException):
+    pass
+
+
+class InvalidSysTransferTypeProcessorException(SystemStatsProcessorException):
     pass
 
 
@@ -168,16 +173,31 @@ class SystemStatsProcessor(BaseProcessor):
         ).set(usage_percent)
         log.debug(f'cpu stats => {temp_c}, {temp_f}, {usage_percent}')
 
+    def _get_packet_count(self, transfer_type, network_stats):
+        packet_key = None
+        if transfer_type == BandwidthTransferTypes.TX:
+            packet_key = NICSInterfaceDictKeys.TX_PACKETS
+        elif transfer_type == BandwidthTransferTypes.RX:
+            packet_key = NICSInterfaceDictKeys.RX_PACKETS
+        elif transfer_type == BandwidthTransferTypes.ERR:
+            packet_key = NICSInterfaceDictKeys.ERR_PACKETS
+        else:
+            e_m = f'Invalid transfer_type: {transfer_type}'
+            log.error(e_m)
+            raise InvalidSysTransferTypeProcessorException(e_m)
+        final_packet_count = network_stats.get(packet_key, 0)
+        t_m = (f'transfer_type: {transfer_type} got '
+               f'final_packet_count: {final_packet_count}')
+        log.debug(t_m)
+        return final_packet_count
+
     def _handle_nics_interface(self, network_id, network_stats):
         ip = network_stats.get(NICSInterfaceDictKeys.IP)
         mac = network_stats.get(NICSInterfaceDictKeys.MAC)
         usage = network_stats.get(NICSInterfaceDictKeys.USAGE)
-        max_speed = network_stats.get(NICSInterfaceDictKeys.MAX_SPEED)
-        err_packets = network_stats.get(NICSInterfaceDictKeys.ERR_PACKETS)
-        rx_packets = network_stats.get(NICSInterfaceDictKeys.RX_PACKETS)
-        tx_packets = network_stats.get(NICSInterfaceDictKeys.TX_PACKETS)
         link_status = network_stats.get(NICSInterfaceDictKeys.LINK_STATUS)
         mask = network_stats.get(NICSInterfaceDictKeys.MASK)
+        max_speed = network_stats.get(NICSInterfaceDictKeys.MAX_SPEED)
         Metrics.SYSTEM_STATS_NICS_MAX_SPEED.labels(
             nas_name=self.nas_name,
             network_id=network_id,
@@ -187,33 +207,18 @@ class SystemStatsProcessor(BaseProcessor):
             link_status=link_status,
             mask=mask,
         ).set(max_speed)
-        Metrics.SYSTEM_STATS_NICS_ERR_PACKETS.labels(
-            nas_name=self.nas_name,
-            network_id=network_id,
-            ip=ip,
-            mac=mac,
-            usage=usage,
-            link_status=link_status,
-            mask=mask,
-        ).set(err_packets)
-        Metrics.SYSTEM_STATS_NICS_RX_PACKETS.labels(
-            nas_name=self.nas_name,
-            network_id=network_id,
-            ip=ip,
-            mac=mac,
-            usage=usage,
-            link_status=link_status,
-            mask=mask,
-        ).set(rx_packets)
-        Metrics.SYSTEM_STATS_NICS_TX_PACKETS.labels(
-            nas_name=self.nas_name,
-            network_id=network_id,
-            ip=ip,
-            mac=mac,
-            usage=usage,
-            link_status=link_status,
-            mask=mask,
-        ).set(tx_packets)
+        for transfer_type in BandwidthTransferTypes.nics_packet_metrics_list():
+            packet_count = self._get_packet_count(transfer_type, network_stats)
+            Metrics.SYSTEM_STATS_NICS_PACKETS_TOTAL.labels(
+                nas_name=self.nas_name,
+                network_id=network_id,
+                ip=ip,
+                mac=mac,
+                usage=usage,
+                link_status=link_status,
+                mask=mask,
+                transfer_type=transfer_type.label_string,
+            ).set(packet_count)
 
     def _handle_nics_dict(self, stats):
         nics = stats.get(SystemStatsKeys.NICS)

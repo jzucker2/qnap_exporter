@@ -6,6 +6,16 @@ from .base_processor import BaseProcessorException, BaseProcessor
 log = app.logger
 
 
+class DriveUnits(object):
+    TB = 'TB'
+    GB = 'GB'
+    MB = 'MB'
+
+    @classmethod
+    def normalized_units(cls):
+        return cls.MB
+
+
 class SmartDiskDictKeys(object):
     CAPACITY = 'capacity'
     DRIVE_NUMBER = 'drive_number'
@@ -21,16 +31,39 @@ class SmartDiskHealthProcessorException(BaseProcessorException):
     pass
 
 
+class SmartDiskUnitsProcessorException(SmartDiskHealthProcessorException):
+    pass
+
+
 class SmartDiskHealthProcessor(BaseProcessor):
-    def _process_capacity(self, disk_id, disk_stats):
+    def _process_capacity(self, disk_stats):
         capacity = disk_stats.get(SmartDiskDictKeys.CAPACITY)
         capacity_pieces = capacity.split(' ')
         size = capacity_pieces[0]
         units = capacity_pieces[1]
-        c_m = (f'for disk_id: {disk_id} got '
-               f'size: {size} for units: {units}')
+        c_m = (f'size: {size} for units: {units}')
         log.debug(c_m)
         return size, units
+
+    def _normalize_capacity(self, capacity, units):
+        # TODO: make this "safer" with exception handling
+        n_m = (f'normalize capacity {type(capacity)}: {capacity} '
+               f'and units {type(units)}: {units}')
+        log.debug(n_m)
+        converted_capacity = float(capacity)
+        c_m = (f'normalize capacity {type(capacity)}: {capacity} '
+               f'and units {type(units)}: {units} to '
+               f'converted_capacity: {converted_capacity}')
+        log.debug(c_m)
+        if units == DriveUnits.TB:
+            return (converted_capacity * (1024 * 1024))
+        elif units == DriveUnits.GB:
+            return (converted_capacity * 1024)
+        elif units == DriveUnits.MB:
+            return converted_capacity
+        e_m = f'invalid units type: {units}'
+        log.error(e_m)
+        raise SmartDiskUnitsProcessorException(e_m)
 
     def _handle_smart_disk(self, smart_disk_id, smart_disk_stats):
         if not smart_disk_stats:
@@ -61,9 +94,9 @@ class SmartDiskHealthProcessor(BaseProcessor):
             disk_type=disk_type,
             disk_health=health,
         ).set(temp_f)
-        capacity, units = self._process_capacity(
-            smart_disk_id,
-            smart_disk_stats)
+        c_m = f'smart_disk_id: {smart_disk_id} about to process capacity'
+        log.debug(c_m)
+        capacity, units = self._process_capacity(smart_disk_stats)
         Metrics.SMART_DISK_HEALTH_CAPACITY_VALUE.labels(
             nas_name=self.nas_name,
             disk_id=smart_disk_id,
@@ -74,6 +107,17 @@ class SmartDiskHealthProcessor(BaseProcessor):
             units=units,
             disk_health=health,
         ).set(capacity)
+        normalized_capacity = self._normalize_capacity(capacity, units)
+        Metrics.SMART_DISK_HEALTH_CAPACITY_NORMALIZED_VALUE.labels(
+            nas_name=self.nas_name,
+            disk_id=smart_disk_id,
+            drive_number=drive_number,
+            model=model,
+            serial=serial,
+            disk_type=disk_type,
+            units=DriveUnits.normalized_units(),
+            disk_health=health,
+        ).set(normalized_capacity)
 
     def process(self, stats, last_updated=None):
         m = (f'_process_smart_disk_health => '

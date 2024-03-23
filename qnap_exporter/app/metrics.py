@@ -35,6 +35,8 @@ class Labels(Enum):
     SYSTEM_SERIAL_NUMBER = 'system_serial_number'
     SYSTEM_TIMEZONE = 'system_timezone'
     DNS = 'dns'
+    MEMORY_TYPE = 'memory_type'
+    LINK_STATUS = 'link_status'
 
     @classmethod
     def labels(cls):
@@ -72,6 +74,8 @@ class Labels(Enum):
             cls.IP.value,
             cls.MAC.value,
             cls.USAGE.value,
+            cls.LINK_STATUS.value,
+            cls.MASK.value,
         ])
 
     @classmethod
@@ -156,6 +160,13 @@ class Labels(Enum):
     def default_system_stats_labels(cls):
         return list(cls.nas_name_labels())
 
+    @classmethod
+    def memory_stats_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+            cls.MEMORY_TYPE.value,
+        ])
+
 
 class Metrics(object):
     # This is just for simple debug stuff
@@ -217,20 +228,10 @@ class Metrics(object):
         'Current system CPU usage percentage',
         Labels.default_system_stats_labels())
 
-    SYSTEM_STATS_MEMORY_FREE_VALUE = Gauge(
-        'qnap_exporter_system_stats_memory_free',
-        'Current free system memory of the QNAP',
-        Labels.default_system_stats_labels())
-
-    SYSTEM_STATS_MEMORY_TOTAL_VALUE = Gauge(
-        'qnap_exporter_system_stats_memory_total',
-        'The total system memory of the QNAP',
-        Labels.default_system_stats_labels())
-
-    SYSTEM_STATS_MEMORY_USED_VALUE = Gauge(
-        'qnap_exporter_system_stats_memory_used',
-        'The used system memory of the QNAP',
-        Labels.default_system_stats_labels())
+    SYSTEM_STATS_MEMORY_TYPE_VALUE = Gauge(
+        'qnap_exporter_system_stats_memory_type_total',
+        'Current system memory for memory_type of the QNAP',
+        Labels.memory_stats_labels())
 
     SYSTEM_STATS_MEMORY_USAGE_PERCENT = Gauge(
         'qnap_exporter_system_stats_memory_usage_percent',

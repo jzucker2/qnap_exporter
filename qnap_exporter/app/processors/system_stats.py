@@ -1,6 +1,7 @@
 from datetime import timedelta
 from flask import current_app as app
 from ..metrics import Metrics
+from ..common.memory_types import MemoryTypes
 from ..common.system_stats_keys import SystemStatsKeys
 from .base_processor import BaseProcessorException, BaseProcessor
 
@@ -121,17 +122,20 @@ class SystemStatsProcessor(BaseProcessor):
         if not memory:
             return
         free = memory.get(MemoryDictKeys.FREE, 0)
-        Metrics.SYSTEM_STATS_MEMORY_FREE_VALUE.labels(
+        Metrics.SYSTEM_STATS_MEMORY_TYPE_VALUE.labels(
             nas_name=self.nas_name,
+            memory_type=MemoryTypes.FREE.value,
         ).set(free)
         total = memory.get(MemoryDictKeys.TOTAL, 0)
-        Metrics.SYSTEM_STATS_MEMORY_TOTAL_VALUE.labels(
+        Metrics.SYSTEM_STATS_MEMORY_TYPE_VALUE.labels(
             nas_name=self.nas_name,
+            memory_type=MemoryTypes.TOTAL.value,
         ).set(total)
         log.debug(f'memory stats => {free}/{total}')
         used = total - free
-        Metrics.SYSTEM_STATS_MEMORY_USED_VALUE.labels(
+        Metrics.SYSTEM_STATS_MEMORY_TYPE_VALUE.labels(
             nas_name=self.nas_name,
+            memory_type=MemoryTypes.USED.value,
         ).set(used)
         usage = (used / total) * 100
         u_m = f'_handle_memory_dict got usage: {usage} from ({used}/{total})'
@@ -172,13 +176,16 @@ class SystemStatsProcessor(BaseProcessor):
         err_packets = network_stats.get(NICSInterfaceDictKeys.ERR_PACKETS)
         rx_packets = network_stats.get(NICSInterfaceDictKeys.RX_PACKETS)
         tx_packets = network_stats.get(NICSInterfaceDictKeys.TX_PACKETS)
-        # TODO: add something to check `link_status` and output a 1 or 0
+        link_status = network_stats.get(NICSInterfaceDictKeys.LINK_STATUS)
+        mask = network_stats.get(NICSInterfaceDictKeys.MASK)
         Metrics.SYSTEM_STATS_NICS_MAX_SPEED.labels(
             nas_name=self.nas_name,
             network_id=network_id,
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(max_speed)
         Metrics.SYSTEM_STATS_NICS_ERR_PACKETS.labels(
             nas_name=self.nas_name,
@@ -186,6 +193,8 @@ class SystemStatsProcessor(BaseProcessor):
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(err_packets)
         Metrics.SYSTEM_STATS_NICS_RX_PACKETS.labels(
             nas_name=self.nas_name,
@@ -193,6 +202,8 @@ class SystemStatsProcessor(BaseProcessor):
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(rx_packets)
         Metrics.SYSTEM_STATS_NICS_TX_PACKETS.labels(
             nas_name=self.nas_name,
@@ -200,6 +211,8 @@ class SystemStatsProcessor(BaseProcessor):
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(tx_packets)
 
     def _handle_nics_dict(self, stats):
@@ -226,7 +239,6 @@ class SystemStatsProcessor(BaseProcessor):
             return
         log.debug(f'got dns: {dns}')
         for dns_value in dns:
-            # TODO: this may overwrite?
             Metrics.NAS_DNS_INFO.labels(
                 nas_name=self.nas_name,
                 dns=dns_value,

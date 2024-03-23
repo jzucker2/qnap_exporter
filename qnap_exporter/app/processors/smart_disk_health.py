@@ -72,7 +72,7 @@ class SmartDiskHealthProcessor(BaseProcessor):
             serial=serial,
             disk_type=disk_type,
             units=units,
-            disk_health = health,
+            disk_health=health,
         ).set(capacity)
 
     def process(self, stats, last_updated=None):

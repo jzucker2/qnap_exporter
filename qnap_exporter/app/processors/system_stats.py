@@ -179,7 +179,7 @@ class SystemStatsProcessor(BaseProcessor):
             packet_key = NICSInterfaceDictKeys.TX_PACKETS
         elif transfer_type == BandwidthTransferTypes.RX:
             packet_key = NICSInterfaceDictKeys.RX_PACKETS
-        elif transfer_type == BandwidthTransferTypes.RX:
+        elif transfer_type == BandwidthTransferTypes.ERR:
             packet_key = NICSInterfaceDictKeys.ERR_PACKETS
         else:
             e_m = f'Invalid transfer_type: {transfer_type}'

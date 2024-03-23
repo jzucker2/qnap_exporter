@@ -36,6 +36,7 @@ class Labels(Enum):
     SYSTEM_TIMEZONE = 'system_timezone'
     DNS = 'dns'
     MEMORY_TYPE = 'memory_type'
+    LINK_STATUS = 'link_status'
 
     @classmethod
     def labels(cls):
@@ -73,6 +74,8 @@ class Labels(Enum):
             cls.IP.value,
             cls.MAC.value,
             cls.USAGE.value,
+            cls.LINK_STATUS.value,
+            cls.MASK.value,
         ])
 
     @classmethod

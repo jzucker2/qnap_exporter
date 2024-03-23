@@ -176,13 +176,16 @@ class SystemStatsProcessor(BaseProcessor):
         err_packets = network_stats.get(NICSInterfaceDictKeys.ERR_PACKETS)
         rx_packets = network_stats.get(NICSInterfaceDictKeys.RX_PACKETS)
         tx_packets = network_stats.get(NICSInterfaceDictKeys.TX_PACKETS)
-        # TODO: add something to check `link_status` and output a 1 or 0
+        link_status = network_stats.get(NICSInterfaceDictKeys.LINK_STATUS)
+        mask = network_stats.get(NICSInterfaceDictKeys.MASK)
         Metrics.SYSTEM_STATS_NICS_MAX_SPEED.labels(
             nas_name=self.nas_name,
             network_id=network_id,
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(max_speed)
         Metrics.SYSTEM_STATS_NICS_ERR_PACKETS.labels(
             nas_name=self.nas_name,
@@ -190,6 +193,8 @@ class SystemStatsProcessor(BaseProcessor):
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(err_packets)
         Metrics.SYSTEM_STATS_NICS_RX_PACKETS.labels(
             nas_name=self.nas_name,
@@ -197,6 +202,8 @@ class SystemStatsProcessor(BaseProcessor):
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(rx_packets)
         Metrics.SYSTEM_STATS_NICS_TX_PACKETS.labels(
             nas_name=self.nas_name,
@@ -204,6 +211,8 @@ class SystemStatsProcessor(BaseProcessor):
             ip=ip,
             mac=mac,
             usage=usage,
+            link_status=link_status,
+            mask=mask,
         ).set(tx_packets)
 
     def _handle_nics_dict(self, stats):

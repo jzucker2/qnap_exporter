@@ -56,9 +56,9 @@ class SmartDiskHealthProcessor(BaseProcessor):
                f'converted_capacity: {converted_capacity}')
         log.debug(c_m)
         if units == DriveUnits.TB:
-            return (converted_capacity / (1024 * 1024))
+            return (converted_capacity * (1024 * 1024))
         elif units == DriveUnits.GB:
-            return (converted_capacity / 1024)
+            return (converted_capacity * 1024)
         elif units == DriveUnits.MB:
             return converted_capacity
         e_m = f'invalid units type: {units}'

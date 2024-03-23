@@ -45,16 +45,22 @@ class SmartDiskHealthProcessor(BaseProcessor):
         log.debug(c_m)
         return size, units
 
-    def _normalize_capacity(self, size, units):
-        n_m = (f'normalize size {type(size)}: {size} '
+    def _normalize_capacity(self, capacity, units):
+        # TODO: make this "safer" with exception handling
+        n_m = (f'normalize capacity {type(capacity)}: {capacity} '
                f'and units {type(units)}: {units}')
-        log.info(n_m)
+        log.debug(n_m)
+        converted_capacity = float(capacity)
+        c_m = (f'normalize capacity {type(capacity)}: {capacity} '
+               f'and units {type(units)}: {units} to '
+               f'converted_capacity: {converted_capacity}')
+        log.debug(c_m)
         if units == DriveUnits.TB:
-            return (size / (1024 * 1024))
+            return (converted_capacity / (1024 * 1024))
         elif units == DriveUnits.GB:
-            return (size / 1024)
+            return (converted_capacity / 1024)
         elif units == DriveUnits.MB:
-            return size
+            return converted_capacity
         e_m = f'invalid units type: {units}'
         log.error(e_m)
         raise SmartDiskUnitsProcessorException(e_m)

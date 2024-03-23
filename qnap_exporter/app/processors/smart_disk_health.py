@@ -6,6 +6,16 @@ from .base_processor import BaseProcessorException, BaseProcessor
 log = app.logger
 
 
+class DriveUnits(object):
+    TB = 'TB'
+    GB = 'GB'
+    MB = 'MB'
+
+    @classmethod
+    def normalized_units(cls):
+        return cls.MB
+
+
 class SmartDiskDictKeys(object):
     CAPACITY = 'capacity'
     DRIVE_NUMBER = 'drive_number'
@@ -21,6 +31,10 @@ class SmartDiskHealthProcessorException(BaseProcessorException):
     pass
 
 
+class SmartDiskUnitsProcessorException(SmartDiskHealthProcessorException):
+    pass
+
+
 class SmartDiskHealthProcessor(BaseProcessor):
     def _process_capacity(self, disk_id, disk_stats):
         capacity = disk_stats.get(SmartDiskDictKeys.CAPACITY)
@@ -31,6 +45,17 @@ class SmartDiskHealthProcessor(BaseProcessor):
                f'size: {size} for units: {units}')
         log.debug(c_m)
         return size, units
+
+    def _normalize_capacity(self, size, units):
+        if units == DriveUnits.TB:
+            return (size / (1024 * 1024))
+        elif units == DriveUnits.GB:
+            return (size / 1024)
+        elif units == DriveUnits.MB:
+            return size
+        e_m = f'invalid units type: {units}'
+        log.error(e_m)
+        raise SmartDiskUnitsProcessorException(e_m)
 
     def _handle_smart_disk(self, smart_disk_id, smart_disk_stats):
         if not smart_disk_stats:
@@ -74,6 +99,17 @@ class SmartDiskHealthProcessor(BaseProcessor):
             units=units,
             disk_health=health,
         ).set(capacity)
+        normalized_capacity = self._normalize_capacity(capacity, units)
+        Metrics.SMART_DISK_HEALTH_CAPACITY_NORMALIZED_VALUE.labels(
+            nas_name=self.nas_name,
+            disk_id=smart_disk_id,
+            drive_number=drive_number,
+            model=model,
+            serial=serial,
+            disk_type=disk_type,
+            units=DriveUnits.normalized_units(),
+            disk_health=health,
+        ).set(normalized_capacity)
 
     def process(self, stats, last_updated=None):
         m = (f'_process_smart_disk_health => '

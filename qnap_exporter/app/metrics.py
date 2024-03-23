@@ -313,6 +313,11 @@ class Metrics(object):
         'Current capacity of disk in dynamically labelled units',
         Labels.smart_disk_capacity_labels())
 
+    SMART_DISK_HEALTH_CAPACITY_NORMALIZED_VALUE = Gauge(
+        'qnap_exporter_smart_disk_health_capacity_normalized',
+        'Current capacity (normalized to MB) of disk in labelled units',
+        Labels.smart_disk_capacity_labels())
+
     NAS_FIRMWARE_INFO = Gauge(
         'qnap_exporter_nas_firmware_info',
         'Info dict for the firmware of the NAS',

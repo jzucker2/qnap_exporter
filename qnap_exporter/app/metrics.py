@@ -27,6 +27,13 @@ class Labels(Enum):
     BUILD = 'build'
     PATCH = 'patch'
     BUILD_TIME = 'build_time'
+    SYSTEM_HEALTH_STATUS = 'system_health_status'
+    CPU_MODEL = 'cpu_model'
+    DISK_HEALTH = 'disk_health'
+    SYSTEM_MODEL = 'system_model'
+    SYSTEM_NAME = 'system_name'
+    SYSTEM_SERIAL_NUMBER = 'system_serial_number'
+    SYSTEM_TIMEZONE = 'system_timezone'
 
     @classmethod
     def labels(cls):
@@ -38,6 +45,13 @@ class Labels(Enum):
     def nas_name_labels(cls):
         return list([
             cls.NAS_NAME.value,
+        ])
+
+    @classmethod
+    def system_health_status_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+            cls.SYSTEM_HEALTH_STATUS.value,
         ])
 
     @classmethod
@@ -87,6 +101,7 @@ class Labels(Enum):
             cls.MODEL.value,
             cls.SERIAL.value,
             cls.DISK_TYPE.value,
+            cls.DISK_HEALTH.value,
         ])
 
     @classmethod
@@ -99,6 +114,7 @@ class Labels(Enum):
             cls.SERIAL.value,
             cls.DISK_TYPE.value,
             cls.UNITS.value,
+            cls.DISK_HEALTH.value,
         ])
 
     @classmethod
@@ -109,6 +125,23 @@ class Labels(Enum):
             cls.BUILD.value,
             cls.PATCH.value,
             cls.BUILD_TIME.value,
+        ])
+
+    @classmethod
+    def cpu_info_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+            cls.CPU_MODEL.value,
+        ])
+
+    @classmethod
+    def system_info_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+            cls.SYSTEM_NAME.value,
+            cls.SYSTEM_MODEL.value,
+            cls.SYSTEM_SERIAL_NUMBER.value,
+            cls.SYSTEM_TIMEZONE.value,
         ])
 
     @classmethod
@@ -273,8 +306,23 @@ class Metrics(object):
 
     NAS_FIRMWARE_INFO = Gauge(
         'qnap_exporter_nas_firmware_info',
-        'Info dict of firmware for the NAS',
+        'Info dict for the firmware of the NAS',
         Labels.firmware_info_labels())
+
+    NAS_SYSTEM_INFO = Gauge(
+        'qnap_exporter_nas_system_info',
+        'Info dict for the system of the NAS',
+        Labels.system_info_labels())
+
+    NAS_CPU_INFO = Gauge(
+        'qnap_exporter_nas_cpu_info',
+        'Info dict for the CPU of the NAS',
+        Labels.cpu_info_labels())
+
+    SYSTEM_HEALTH_STATUS = Gauge(
+        'qnap_exporter_nas_system_health_status',
+        'The latest system health status reported by the NAS',
+        Labels.system_health_status_labels())
 
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern

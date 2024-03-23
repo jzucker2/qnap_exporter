@@ -15,7 +15,6 @@ class BandwidthTransferTypes(Enum):
         return list([
             cls.TX,
             cls.RX,
-            cls.ERR,
         ])
 
     @classmethod

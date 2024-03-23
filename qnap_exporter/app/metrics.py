@@ -37,7 +37,7 @@ class Labels(Enum):
     DNS = 'dns'
     MEMORY_TYPE = 'memory_type'
     LINK_STATUS = 'link_status'
-    TRANSFER_TYPE = 'bandwidth_transfer_type'
+    TRANSFER_TYPE = 'transfer_type'
 
     @classmethod
     def labels(cls):

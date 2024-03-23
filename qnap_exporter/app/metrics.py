@@ -34,6 +34,7 @@ class Labels(Enum):
     SYSTEM_NAME = 'system_name'
     SYSTEM_SERIAL_NUMBER = 'system_serial_number'
     SYSTEM_TIMEZONE = 'system_timezone'
+    DNS = 'dns'
 
     @classmethod
     def labels(cls):
@@ -142,6 +143,13 @@ class Labels(Enum):
             cls.SYSTEM_MODEL.value,
             cls.SYSTEM_SERIAL_NUMBER.value,
             cls.SYSTEM_TIMEZONE.value,
+        ])
+
+    @classmethod
+    def dns_info_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+            cls.DNS.value,
         ])
 
     @classmethod
@@ -318,6 +326,11 @@ class Metrics(object):
         'qnap_exporter_nas_cpu_info',
         'Info dict for the CPU of the NAS',
         Labels.cpu_info_labels())
+
+    NAS_DNS_INFO = Gauge(
+        'qnap_exporter_nas_dns_info',
+        'Info dict for the DNS of the NAS',
+        Labels.dns_info_labels())
 
     SYSTEM_HEALTH_STATUS = Gauge(
         'qnap_exporter_nas_system_health_status',

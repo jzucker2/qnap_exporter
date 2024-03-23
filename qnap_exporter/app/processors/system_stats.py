@@ -225,9 +225,13 @@ class SystemStatsProcessor(BaseProcessor):
         dns = stats.get(SystemStatsKeys.DNS)
         if not dns:
             return
-        log.info(f'got dns: {dns}')
-        # for key, value in dns.items():
-        #     self._handle_nics_interface(key, value)
+        log.debug(f'got dns: {dns}')
+        for dns_value in dns:
+            # TODO: this may overwrite?
+            Metrics.NAS_DNS_INFO.labels(
+                nas_name=self.nas_name,
+                dns=dns_value,
+            ).set(1)
 
     def process(self, stats, last_updated=None):
         m = (f'_process_system_stats => '
@@ -240,3 +244,4 @@ class SystemStatsProcessor(BaseProcessor):
         self._handle_uptime_dict(stats)
         self._handle_nics_dict(stats)
         self._handle_system_dict(stats)
+        self._handle_dns_dict(stats)

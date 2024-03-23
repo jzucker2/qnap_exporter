@@ -23,6 +23,10 @@ class Labels(Enum):
     DRIVE_NUMBER = 'drive_number'
     SERIAL = 'serial'
     UNITS = 'units'
+    VERSION = 'version'
+    BUILD = 'build'
+    PATCH = 'patch'
+    BUILD_TIME = 'build_time'
 
     @classmethod
     def labels(cls):
@@ -95,6 +99,16 @@ class Labels(Enum):
             cls.SERIAL.value,
             cls.DISK_TYPE.value,
             cls.UNITS.value,
+        ])
+
+    @classmethod
+    def firmware_info_labels(cls):
+        return list([
+            cls.NAS_NAME.value,
+            cls.VERSION.value,
+            cls.BUILD.value,
+            cls.PATCH.value,
+            cls.BUILD_TIME.value,
         ])
 
     @classmethod
@@ -256,6 +270,11 @@ class Metrics(object):
         'qnap_exporter_smart_disk_health_capacity',
         'Current capacity of disk in dynamically labelled units',
         Labels.smart_disk_capacity_labels())
+
+    NAS_FIRMWARE_INFO = Gauge(
+        'qnap_exporter_nas_firmware_info',
+        'Info dict of firmware for the NAS',
+        Labels.firmware_info_labels())
 
 
 # https://github.com/rycus86/prometheus_flask_exporter#app-factory-pattern

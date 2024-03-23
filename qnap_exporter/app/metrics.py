@@ -259,7 +259,7 @@ class Metrics(object):
         Labels.nics_packet_labels())
 
     SYSTEM_STATS_NICS_MAX_SPEED = Gauge(
-        'qnap_exporter_system_stats_nics_max_speed',
+        'qnap_exporter_system_stats_nics_max_speed_total',
         'The QNAP system stats nics max speed',
         Labels.nics_labels())
 

@@ -1,3 +1,4 @@
+.tool-versions
 Dockerfile
 .DS_Store
 .gitignore

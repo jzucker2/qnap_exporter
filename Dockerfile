@@ -3,8 +3,8 @@ FROM ghcr.io/jzucker2/filmstock:${FILMSTOCK_VERSION} AS linux_base
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 FROM linux_base AS python_dependencies
 COPY requirements.txt requirements.txt
@@ -30,9 +30,9 @@ WORKDIR /qnap_exporter
 ENV FLASK_APP=app
 
 FROM source_code AS app_setup
-ENV PROMETHEUS_MULTIPROC_DIR /tmp
-ENV prometheus_multiproc_dir /tmp
-ENV METRICS_PORT 1805
+ENV PROMETHEUS_MULTIPROC_DIR=/tmp
+ENV prometheus_multiproc_dir=/tmp
+ENV METRICS_PORT=1805
 
 # can use `run_dev.sh` or `run_prod.sh`
 CMD ["sh", "run_prod.sh"]

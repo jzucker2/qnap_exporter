@@ -10,7 +10,7 @@ FROM linux_base AS python_dependencies
 COPY requirements.txt requirements.txt
 RUN pip wheel --no-deps --wheel-dir /app/wheels -r requirements.txt
 
-FROM python:3.10-slim AS base_python
+FROM python:3.13-slim AS base_python
 
 RUN apt-get update -y && apt-get install -y \
         curl \

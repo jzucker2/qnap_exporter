@@ -9,6 +9,7 @@ from .base_processor import BaseProcessorException, BaseProcessor
 
 log = app.logger
 
+
 class FansDictKeys(object):
     SPEED = 'speed'
     STATUS = 'status'

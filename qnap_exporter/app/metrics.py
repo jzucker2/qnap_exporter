@@ -228,6 +228,12 @@ class Metrics(object):
         'Exceptions while attempting collector metrics update route request',
         Labels.nas_name_labels())
 
+    NAS_RESPONSIVE_STATUS = Gauge(
+        'qnap_exporter_nas_responsive_status',
+        'Whether the NAS is responsive to app (1=online 0=offline)',
+        Labels.nas_name_labels()
+    )
+
     # Below are for actual QNAP NAS instances
     # for units, see https://github.com/home-assistant/core/blob/dev/homeassistant/components/qnap/sensor.py  # noqa: E501
 

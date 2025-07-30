@@ -279,6 +279,9 @@ class SystemStatsProcessor(BaseProcessor):
              f'stats: {stats} ({last_updated})')
         log.debug(m)
         if not stats:
+            Metrics.NAS_RESPONSIVE_STATUS.labels(
+                nas_name=self.nas_name,
+            ).set(0)
             return
         self._handle_cpu_dict(stats)
         self._handle_memory_dict(stats)
@@ -288,3 +291,6 @@ class SystemStatsProcessor(BaseProcessor):
         self._handle_firmware_dict(stats)
         self._handle_system_dict(stats)
         self._handle_dns_dict(stats)
+        Metrics.NAS_RESPONSIVE_STATUS.labels(
+            nas_name=self.nas_name,
+        ).set(1)

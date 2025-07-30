@@ -40,6 +40,7 @@ class Labels(Enum):
     TRANSFER_TYPE = 'transfer_type'
     FAN_NAME = 'fan_name'
     STATUS = 'status'
+    LOG_LEVEL = 'log_level'
 
     @classmethod
     def labels(cls):
@@ -169,6 +170,13 @@ class Labels(Enum):
         ])
 
     @classmethod
+    def exporter_app_info_labels(cls):
+        return list([
+            cls.VERSION.value,
+            cls.LOG_LEVEL.value,
+        ])
+
+    @classmethod
     def default_system_stats_labels(cls):
         return list(cls.nas_name_labels())
 
@@ -231,8 +239,12 @@ class Metrics(object):
     NAS_RESPONSIVE_STATUS = Gauge(
         'qnap_exporter_nas_responsive_status',
         'Whether the NAS is responsive to app (1=online 0=offline)',
-        Labels.nas_name_labels()
-    )
+        Labels.nas_name_labels())
+
+    EXPORTER_APP_INFO = Gauge(
+        'qnap_exporter_app_info',
+        'Info dict for the exporter',
+        Labels.exporter_app_info_labels())
 
     # Below are for actual QNAP NAS instances
     # for units, see https://github.com/home-assistant/core/blob/dev/homeassistant/components/qnap/sensor.py  # noqa: E501

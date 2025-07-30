@@ -9,6 +9,10 @@ from .base_processor import BaseProcessorException, BaseProcessor
 
 log = app.logger
 
+class FansDictKeys(object):
+    SPEED = 'speed'
+    STATUS = 'status'
+
 
 class UptimeDictKeys(object):
     DAYS = 'days'
@@ -113,6 +117,26 @@ class SystemStatsProcessor(BaseProcessor):
         Metrics.SYSTEM_STATS_SYSTEM_TEMP_F_VALUE.labels(
             nas_name=self.nas_name,
         ).set(temp_f)
+
+    def _handle_fans_dict(self, stats):
+        fans = stats.get(SystemStatsKeys.FANS)
+        log.debug(f'fans: {fans}')
+        if not fans:
+            log.debug('no fans found')
+            return
+        for fan_name, fan_info in fans.items():
+            log.debug(f'got fan_name: {fan_name} and fan_info: {fan_info}')
+            fan_speed = fan_info.get(FansDictKeys.SPEED)
+            status = fan_info.get(FansDictKeys.STATUS)
+            Metrics.SYSTEM_STATS_FAN_SPEED.labels(
+                nas_name=self.nas_name,
+                fan_name=fan_name,
+            ).set(fan_speed)
+            Metrics.SYSTEM_STATS_FAN_STATUS.labels(
+                nas_name=self.nas_name,
+                fan_name=fan_name,
+                status=status,
+            ).set(1)
 
     def _handle_uptime_dict(self, stats):
         uptime = stats.get(SystemStatsKeys.UPTIME)
@@ -259,6 +283,7 @@ class SystemStatsProcessor(BaseProcessor):
         self._handle_memory_dict(stats)
         self._handle_uptime_dict(stats)
         self._handle_nics_dict(stats)
+        self._handle_fans_dict(stats)
         self._handle_firmware_dict(stats)
         self._handle_system_dict(stats)
         self._handle_dns_dict(stats)

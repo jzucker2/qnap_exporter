@@ -38,6 +38,8 @@ class Labels(Enum):
     MEMORY_TYPE = 'memory_type'
     LINK_STATUS = 'link_status'
     TRANSFER_TYPE = 'transfer_type'
+    FAN_NAME = 'fan_name'
+    STATUS = 'status'
 
     @classmethod
     def labels(cls):
@@ -171,6 +173,22 @@ class Labels(Enum):
         return list(cls.nas_name_labels())
 
     @classmethod
+    def system_stats_basic_fan_labels(cls):
+        default_labels = cls.nas_name_labels()
+        default_labels.extend([
+            cls.FAN_NAME.value,
+        ])
+        return list(default_labels)
+
+    @classmethod
+    def system_stats_fan_status_labels(cls):
+        default_labels = cls.system_stats_basic_fan_labels()
+        default_labels.extend([
+            cls.STATUS.value,
+        ])
+        return list(default_labels)
+
+    @classmethod
     def memory_stats_labels(cls):
         return list([
             cls.NAS_NAME.value,
@@ -252,6 +270,16 @@ class Metrics(object):
         'qnap_exporter_system_stats_uptime_seconds',
         'The total system uptime of the QNAP in seconds',
         Labels.default_system_stats_labels())
+
+    SYSTEM_STATS_FAN_SPEED = Gauge(
+        'qnap_exporter_system_stats_fan_speed',
+        'The fan speed of system fans of the QNAP',
+        Labels.system_stats_basic_fan_labels())
+
+    SYSTEM_STATS_FAN_STATUS = Gauge(
+        'qnap_exporter_system_stats_fan_status',
+        'The fan status of system fans of the QNAP (either ok or alert)',
+        Labels.system_stats_fan_status_labels())
 
     SYSTEM_STATS_NICS_PACKETS_TOTAL = Gauge(
         'qnap_exporter_system_stats_nics_packets_total',

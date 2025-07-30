@@ -38,6 +38,9 @@ class Labels(Enum):
     MEMORY_TYPE = 'memory_type'
     LINK_STATUS = 'link_status'
     TRANSFER_TYPE = 'transfer_type'
+    FAN_NAME = 'fan_name'
+    STATUS = 'status'
+    LOG_LEVEL = 'log_level'
 
     @classmethod
     def labels(cls):
@@ -167,8 +170,31 @@ class Labels(Enum):
         ])
 
     @classmethod
+    def exporter_app_info_labels(cls):
+        return list([
+            cls.VERSION.value,
+            cls.LOG_LEVEL.value,
+        ])
+
+    @classmethod
     def default_system_stats_labels(cls):
         return list(cls.nas_name_labels())
+
+    @classmethod
+    def system_stats_basic_fan_labels(cls):
+        default_labels = cls.nas_name_labels()
+        default_labels.extend([
+            cls.FAN_NAME.value,
+        ])
+        return list(default_labels)
+
+    @classmethod
+    def system_stats_fan_status_labels(cls):
+        default_labels = cls.system_stats_basic_fan_labels()
+        default_labels.extend([
+            cls.STATUS.value,
+        ])
+        return list(default_labels)
 
     @classmethod
     def memory_stats_labels(cls):
@@ -209,6 +235,16 @@ class Metrics(object):
         'qnap_exporter_collector_metrics_update_route_exceptions',
         'Exceptions while attempting collector metrics update route request',
         Labels.nas_name_labels())
+
+    NAS_RESPONSIVE_STATUS = Gauge(
+        'qnap_exporter_nas_responsive_status',
+        'Whether the NAS is responsive to app (1=online 0=offline)',
+        Labels.nas_name_labels())
+
+    EXPORTER_APP_INFO = Gauge(
+        'qnap_exporter_app_info',
+        'Info dict for the exporter',
+        Labels.exporter_app_info_labels())
 
     # Below are for actual QNAP NAS instances
     # for units, see https://github.com/home-assistant/core/blob/dev/homeassistant/components/qnap/sensor.py  # noqa: E501
@@ -252,6 +288,16 @@ class Metrics(object):
         'qnap_exporter_system_stats_uptime_seconds',
         'The total system uptime of the QNAP in seconds',
         Labels.default_system_stats_labels())
+
+    SYSTEM_STATS_FAN_SPEED = Gauge(
+        'qnap_exporter_system_stats_fan_speed',
+        'The fan speed of system fans of the QNAP',
+        Labels.system_stats_basic_fan_labels())
+
+    SYSTEM_STATS_FAN_STATUS = Gauge(
+        'qnap_exporter_system_stats_fan_status',
+        'The fan status of system fans of the QNAP (either ok or alert)',
+        Labels.system_stats_fan_status_labels())
 
     SYSTEM_STATS_NICS_PACKETS_TOTAL = Gauge(
         'qnap_exporter_system_stats_nics_packets_total',

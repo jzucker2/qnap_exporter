@@ -40,6 +40,9 @@ def create_app(config=config.base_config):
         # after routes, register metrics
         register_metrics(app)
 
+        # now record app info metrics
+        record_app_info_metrics(log_level)
+
     return app
 
 
@@ -54,6 +57,15 @@ def register_extensions(app):
 
 def register_metrics(app):
     metrics.init_app(app)
+
+
+def record_app_info_metrics(log_level):
+    from .version import version
+    from .metrics import Metrics
+    Metrics.EXPORTER_APP_INFO.labels(
+        version=version,
+        log_level=log_level,
+    ).set(1)
 
 
 # def register_errorhandlers(app):

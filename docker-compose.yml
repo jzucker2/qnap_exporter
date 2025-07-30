@@ -6,12 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://host.docker.internal:2003/api/v1/health || exit 1" ]
-      interval: 30s
-      timeout: 60s
-      retries: 5
-      start_period: 80s
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
@@ -28,5 +22,6 @@ services:
       - QNAP_NAS_USERNAME=${QNAP_NAS_USERNAME}
       # hopefully something secret!
       - QNAP_NAS_PASSWORD=${QNAP_NAS_PASSWORD}
+      - QNAP_EXPORTER_LOGGING_LEVEL=DEBUG
     stdin_open: true
     tty: true

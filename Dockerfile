@@ -34,5 +34,13 @@ ENV PROMETHEUS_MULTIPROC_DIR=/tmp
 ENV prometheus_multiproc_dir=/tmp
 ENV METRICS_PORT=1805
 
+# Expose the port on which the application will run
+EXPOSE 2003
+# Expose the port on which the metrics are provided
+EXPOSE 1805
+
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 \
+    CMD curl -f http://0.0.0.0:2003/api/v1/health || exit 1
+
 # can use `run_dev.sh` or `run_prod.sh`
 CMD ["sh", "run_prod.sh"]

@@ -6,3 +6,4 @@ class SystemStatsKeys(object):
     NICS = 'nics'
     SYSTEM = 'system'
     UPTIME = 'uptime'
+    FANS = 'sysfans'

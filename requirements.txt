@@ -21,7 +21,7 @@ prometheus-flask-exporter==0.21.0
 python-dateutil==2.8.2
 pytz==2022.2
 pytz-deprecation-shim==0.1.0.post0
-PyYAML==6.0.1
+PyYAML==6.0.3
 # missing from pypi https://github.com/colinodell/python-qnapstats/issues/103
 # qnapstats==0.6.0
 git+https://github.com/colinodell/python-qnapstats@0.6.0#egg=qnapstats
